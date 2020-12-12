@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
-
 @RestController
 @RequestMapping( "external-resource" )
 @AllArgsConstructor
@@ -22,13 +20,19 @@ public class ForgienExchangeExternalResource
     private final ForgienExchangeProvider forgienExchangeProvider;
 
     @GetMapping( value = "/exchange" )
-    public Response exchange( @NotNull @RequestParam( "currencies" ) String currencies )
+    public Response exchange( @RequestParam( "currencies" ) String currencies )
     {
+
+        if(currencies == null)
+        {
+            throw new IllegalArgumentException("Given currency pair is not acceptable");
+        }
+
         String[] currArr = currencies.split(",");
 
         if(StringUtils.isNotEmpty(currArr) && currArr.length == 2)
         {
-            // TODO : check not supported money for example USA etc throw exception
+            // TODO : check not supported money throw exception we need to handle those exceptions
             Exchange exchange = this.forgienExchangeProvider.getExchange(currArr[0], currArr[1]);
 
             return Response.builder().data(exchange).build();

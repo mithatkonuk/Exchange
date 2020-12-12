@@ -27,24 +27,18 @@ public class ExChangeConfiguration
     @Value( "${forgien_exchange_providers.internal.timeout.read}" )
     private int readTimeOut;
 
-    @Value( "${forgien_exchange_providers.external.url}" )
-    private String externalUrl;
-
-    @ConditionalOnProperty( prefix = "forgien_exchange_providers.internal", name = "enabled", havingValue = "true" )
-    @Bean
-    public RestTemplate restTemplate( RestTemplateBuilder builder )
-    {
-        RestTemplate restTemplate = builder.build();
-        restTemplate.setRequestFactory(getClientHttpRequestFactory());
-        return restTemplate;
-    }
-
+    /*
+        if we disable feign so this will be primary
+     */
     @ConditionalOnProperty( prefix = "forgien_exchange_providers.internal", name = "enabled", havingValue = "true" )
     @Bean
     @Qualifier( "${forgien_exchange_providers.internal.name}" )
     RateApiInternalExchangeProvider restTemplateInternalExchangeProvider(
-                    RestTemplate restTemplate )
+                    RestTemplateBuilder builder )
     {
+
+        RestTemplate restTemplate = builder.build();
+        restTemplate.setRequestFactory(getClientHttpRequestFactory());
         return new RateApiInternalExchangeProvider(restTemplate);
     }
 
