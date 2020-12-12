@@ -1,4 +1,4 @@
-package com.ozan.exchange.foreign.exchange.provider;
+package com.ozan.exchange.provider;
 
 import org.springframework.cloud.openfeign.FeignClient;
 

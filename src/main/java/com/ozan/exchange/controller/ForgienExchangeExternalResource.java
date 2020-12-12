@@ -1,9 +1,10 @@
-package com.ozan.exchange.foreign.exchange.controller;
+package com.ozan.exchange.controller;
 
-import com.ozan.exchange.foreign.exchange.dto.Exchange;
-import com.ozan.exchange.foreign.exchange.http.response.Response;
-import com.ozan.exchange.foreign.exchange.provider.ForgienExchangeProvider;
+import com.ozan.exchange.dto.Exchange;
+import com.ozan.exchange.http.response.Response;
+import com.ozan.exchange.provider.ForgienExchangeProvider;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class ForgienExchangeExternalResource
 {
+    @Qualifier("rateApiExternalExchangeProvider")
     private final ForgienExchangeProvider forgienExchangeProvider;
 
     @GetMapping( value = "/exchange" )

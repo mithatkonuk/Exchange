@@ -1,6 +1,6 @@
-package com.ozan.exchange.foreign.exchange.provider;
+package com.ozan.exchange.provider;
 
-import com.ozan.exchange.foreign.exchange.dto.Exchange;
+import com.ozan.exchange.dto.Exchange;
 import lombok.AllArgsConstructor;
 import org.springframework.web.client.RestTemplate;
 

@@ -1,4 +1,4 @@
-package com.ozan.exchange.foreign.exchange.http.response;
+package com.ozan.exchange.http.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

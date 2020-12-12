@@ -1,12 +1,13 @@
-package com.ozan.exchange.foreign.exchange;
+package com.ozan.exchange;
 
-import com.ozan.exchange.foreign.exchange.configuration.ForgienExchangeProviderConfiguration;
-import com.ozan.exchange.foreign.exchange.dto.Exchange;
-import com.ozan.exchange.foreign.exchange.provider.ForgienExchangeProvider;
-import com.ozan.exchange.foreign.exchange.provider.RestTemplateInternalExchangeProvider;
+import com.ozan.exchange.configuration.ForgienExchangeProviderConfiguration;
+import com.ozan.exchange.dto.Exchange;
+import com.ozan.exchange.provider.ForgienExchangeProvider;
+import com.ozan.exchange.provider.RestTemplateInternalExchangeProvider;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@EnableFeignClients
+//@EnableFeignClients
 public class ForeignExchangeApplication
 {
     private static final Logger logger = LoggerFactory.getLogger(ForeignExchangeApplication.class);
@@ -30,7 +31,7 @@ public class ForeignExchangeApplication
     @AllArgsConstructor
     public class Runner implements CommandLineRunner
     {
-
+        @Qualifier("restTemplateInternalExchangeProvider")
         private final ForgienExchangeProvider exchangeProvider;
 
         private final ForgienExchangeProviderConfiguration configuration;
@@ -51,6 +52,7 @@ public class ForeignExchangeApplication
     public class Test
     {
 
+        @Qualifier("restTemplateInternalExchangeProvider")
         private final RestTemplateInternalExchangeProvider springRestTemplateExchangeProvider;
 
         @GetMapping( value = "/test" )
