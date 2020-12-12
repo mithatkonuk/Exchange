@@ -6,28 +6,29 @@ import com.ozan.exchange.provider.ForgienExchangeProvider;
 import com.ozan.exchange.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @RestController
 @RequestMapping( "external-resource" )
 @AllArgsConstructor
+@Validated
 public class ForgienExchangeExternalResource
 {
     @Qualifier( "${forgien_exchange_providers.external.name}" )
     private final ForgienExchangeProvider forgienExchangeProvider;
 
     @GetMapping( value = "/exchange" )
-    public Response exchange( @RequestParam( "currencies" ) String currencies )
+    public Response exchange(
+                    @NotNull @NotBlank @NotEmpty @RequestParam( "currencies" ) String currencies )
     {
-
-        if(currencies == null)
-        {
-            throw new IllegalArgumentException("Given currency pair is not acceptable");
-        }
-
         String[] currArr = currencies.split(",");
 
         if(StringUtils.isNotEmpty(currArr) && currArr.length == 2)
