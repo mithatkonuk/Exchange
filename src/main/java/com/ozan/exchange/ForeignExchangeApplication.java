@@ -28,7 +28,7 @@ public class ForeignExchangeApplication
     @AllArgsConstructor
     public class Runner implements CommandLineRunner
     {
-        @Qualifier( "restTemplateInternalExchangeProvider" )
+        @Qualifier( "${forgien_exchange_providers.external.name}" )
         private final ForgienExchangeProvider exchangeProvider;
 
         private final ForgienExchangeProviderConfiguration configuration;
@@ -43,21 +43,5 @@ public class ForeignExchangeApplication
 
         }
     }
-
-    //    @RestController
-    //    @AllArgsConstructor
-    //    public class Test
-    //    {
-    //        @Qualifier( "rateApiExternalExchangeProvider" )
-    //        private final ForgienExchangeProvider forgienExchangeProvider;
-    //
-    //        @GetMapping( value = "/test" )
-    //        public String test()
-    //        {
-    //            Exchange allExchanges = forgienExchangeProvider.getExchange("EUR", "TRY");
-    //            logger.info(allExchanges.toString());
-    //            return "test";
-    //        }
-    //    }
 
 }

@@ -19,13 +19,13 @@ import org.springframework.web.client.RestTemplate;
 public class ExChangeConfiguration
 {
 
-    @Value( "${provider.timeout.connect}" )
+    @Value( "${forgien_exchange_providers.internal.timeout.connect}" )
     private int connectTimeOut;
 
-    @Value( "${provider.timeout.read}" )
+    @Value( "${forgien_exchange_providers.internal.timeout.read}" )
     private int readTimeOut;
 
-    @ConditionalOnProperty( prefix = "provider.internal", name = "enabled", havingValue = "true" )
+    @ConditionalOnProperty( prefix = "forgien_exchange_providers.internal", name = "enabled", havingValue = "true" )
     @Bean
     public RestTemplate restTemplate( RestTemplateBuilder builder )
     {
@@ -35,9 +35,9 @@ public class ExChangeConfiguration
     }
 
 
-    @ConditionalOnProperty( prefix = "provider.internal", name = "enabled", havingValue = "true" )
+    @ConditionalOnProperty( prefix = "forgien_exchange_providers.internal", name = "enabled", havingValue = "true" )
     @Bean
-    @Qualifier( "restTemplateInternalExchangeProvider" )
+    @Qualifier( "${forgien_exchange_providers.internal.name}" )
     RestTemplateInternalExchangeProvider restTemplateInternalExchangeProvider(
                     RestTemplate restTemplate )
     {
