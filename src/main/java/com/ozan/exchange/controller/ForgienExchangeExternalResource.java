@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class ForgienExchangeExternalResource
 {
-    @Qualifier( "rateApiExternalExchangeProvider" )
+    @Qualifier( "${forgien_exchange_providers.external.name}" )
     private final ForgienExchangeProvider forgienExchangeProvider;
 
     @GetMapping( value = "/exchange" )

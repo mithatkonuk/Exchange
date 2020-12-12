@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
  * you can also set internal provider and also customize with other external service
  */
 @AllArgsConstructor
-public class RestTemplateInternalExchangeProvider implements ForgienExchangeProvider
+public class RateApiInternalExchangeProvider implements ForgienExchangeProvider
 {
     private final RestTemplate restTemplate;
 

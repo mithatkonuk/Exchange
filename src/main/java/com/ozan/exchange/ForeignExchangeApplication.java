@@ -1,6 +1,5 @@
 package com.ozan.exchange;
 
-import com.ozan.exchange.configuration.ForgienExchangeProviderConfiguration;
 import com.ozan.exchange.dto.Exchange;
 import com.ozan.exchange.provider.ForgienExchangeProvider;
 import lombok.AllArgsConstructor;
@@ -28,10 +27,8 @@ public class ForeignExchangeApplication
     @AllArgsConstructor
     public class Runner implements CommandLineRunner
     {
-        @Qualifier( "${forgien_exchange_providers.external.name}" )
+        @Qualifier( "${forgien_exchange_providers.internal.name}" )
         private final ForgienExchangeProvider exchangeProvider;
-
-        private final ForgienExchangeProviderConfiguration configuration;
 
         @Override
         public void run( String... args )
@@ -39,7 +36,6 @@ public class ForeignExchangeApplication
             Exchange exchange = exchangeProvider.getExchange("EUR", "TRY");
 
             logger.info("exchange " + exchange.toString());
-            logger.info("configuration " + configuration.toString());
 
         }
     }

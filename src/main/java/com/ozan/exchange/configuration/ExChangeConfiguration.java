@@ -1,12 +1,14 @@
 package com.ozan.exchange.configuration;
 
-import com.ozan.exchange.provider.RestTemplateInternalExchangeProvider;
+import com.ozan.exchange.provider.RateApiInternalExchangeProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.cloud.openfeign.FeignClientsConfiguration;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Configuration
 @ComponentScan( basePackages = "com.ozan.exchange" )
-@Import( { ForgienExchangeProviderConfiguration.class, FeignClientsConfiguration.class } )
+@Import( { ForgienExchangeProviderConfiguration.class } )
 public class ExChangeConfiguration
 {
 
@@ -24,6 +26,9 @@ public class ExChangeConfiguration
 
     @Value( "${forgien_exchange_providers.internal.timeout.read}" )
     private int readTimeOut;
+
+    @Value( "${forgien_exchange_providers.external.url}" )
+    private String externalUrl;
 
     @ConditionalOnProperty( prefix = "forgien_exchange_providers.internal", name = "enabled", havingValue = "true" )
     @Bean
@@ -34,14 +39,13 @@ public class ExChangeConfiguration
         return restTemplate;
     }
 
-
     @ConditionalOnProperty( prefix = "forgien_exchange_providers.internal", name = "enabled", havingValue = "true" )
     @Bean
     @Qualifier( "${forgien_exchange_providers.internal.name}" )
-    RestTemplateInternalExchangeProvider restTemplateInternalExchangeProvider(
+    RateApiInternalExchangeProvider restTemplateInternalExchangeProvider(
                     RestTemplate restTemplate )
     {
-        return new RestTemplateInternalExchangeProvider(restTemplate);
+        return new RateApiInternalExchangeProvider(restTemplate);
     }
 
     private HttpComponentsClientHttpRequestFactory getClientHttpRequestFactory()
