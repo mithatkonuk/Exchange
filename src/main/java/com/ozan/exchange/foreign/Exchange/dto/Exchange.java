@@ -1,15 +1,15 @@
 package com.ozan.exchange.foreign.Exchange.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Map;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class Exchange
 {
     private String base;
