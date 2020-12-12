@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "resttemplate.read",
+      "type": "java.lang.String",
+      "description": "resttemplate read timeout"
+    },
+    {
+      "name": "resttemplate.connect",
+      "type": "java.lang.String",
+      "description": "resttemplate connection timeout"
+    }
+  ]
+}
