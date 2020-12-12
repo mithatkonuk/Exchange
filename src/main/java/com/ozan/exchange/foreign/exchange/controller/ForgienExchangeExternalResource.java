@@ -1,8 +1,8 @@
-package com.ozan.exchange.foreign.Exchange.controller;
+package com.ozan.exchange.foreign.exchange.controller;
 
-import com.ozan.exchange.foreign.Exchange.dto.Exchange;
-import com.ozan.exchange.foreign.Exchange.http.response.Response;
-import com.ozan.exchange.foreign.Exchange.provider.ForgienExchangeProvider;
+import com.ozan.exchange.foreign.exchange.dto.Exchange;
+import com.ozan.exchange.foreign.exchange.http.response.Response;
+import com.ozan.exchange.foreign.exchange.provider.ForgienExchangeProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

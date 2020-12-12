@@ -1,4 +1,4 @@
-package com.ozan.exchange.foreign.Exchange.configuration;
+package com.ozan.exchange.foreign.exchange.configuration;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

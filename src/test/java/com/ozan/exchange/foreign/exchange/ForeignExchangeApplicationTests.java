@@ -1,4 +1,4 @@
-package com.ozan.exchange.foreign.Exchange;
+package com.ozan.exchange.foreign.exchange;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.ozan.exchange.foreign.Exchange.dto;
+package com.ozan.exchange.foreign.exchange.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
