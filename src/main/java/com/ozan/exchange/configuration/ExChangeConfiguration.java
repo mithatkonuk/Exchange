@@ -25,9 +25,6 @@ public class ExChangeConfiguration
     @Value( "${provider.timeout.read}" )
     private int readTimeOut;
 
-    @Value( "${forgien_exchange_providers.url}" )
-    private String url;
-
     @ConditionalOnProperty( prefix = "provider.internal", name = "enabled", havingValue = "true" )
     @Bean
     public RestTemplate restTemplate( RestTemplateBuilder builder )
@@ -37,7 +34,7 @@ public class ExChangeConfiguration
         return restTemplate;
     }
 
-    @Primary
+
     @ConditionalOnProperty( prefix = "provider.internal", name = "enabled", havingValue = "true" )
     @Bean
     @Qualifier( "restTemplateInternalExchangeProvider" )
