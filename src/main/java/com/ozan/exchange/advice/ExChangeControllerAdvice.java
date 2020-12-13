@@ -1,9 +1,9 @@
-package com.ozan.exchange.controllerAdvice;
+package com.ozan.exchange.advice;
 
 import com.ozan.exchange.error.ErrorCode;
 import com.ozan.exchange.exception.ExternalServiceException;
-import com.ozan.exchange.http.response.Response;
-import com.ozan.exchange.http.response.ResponseError;
+import com.ozan.exchange.web.util.Response;
+import com.ozan.exchange.web.util.ResponseError;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;

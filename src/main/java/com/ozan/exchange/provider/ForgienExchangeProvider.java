@@ -1,6 +1,6 @@
 package com.ozan.exchange.provider;
 
-import com.ozan.exchange.dto.Exchange;
+import com.ozan.exchange.domain.Exchange;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;

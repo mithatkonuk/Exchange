@@ -1,4 +1,4 @@
-package com.ozan.exchange.dto;
+package com.ozan.exchange.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

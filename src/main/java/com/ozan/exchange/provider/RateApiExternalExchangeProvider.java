@@ -1,7 +1,7 @@
 package com.ozan.exchange.provider;
 
 import com.ozan.exchange.configuration.ForgienExternalExChangeConfiguration;
-import com.ozan.exchange.dto.Exchange;
+import com.ozan.exchange.domain.Exchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;

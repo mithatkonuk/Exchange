@@ -1,11 +1,11 @@
 package com.ozan.exchange.controller;
 
 import com.ozan.exchange.annotation.OzanExecutionTimeLogged;
-import com.ozan.exchange.dto.Exchange;
-import com.ozan.exchange.dto.ForgienConversion;
+import com.ozan.exchange.domain.Exchange;
+import com.ozan.exchange.domain.ForgienConversion;
 import com.ozan.exchange.error.ErrorCode;
 import com.ozan.exchange.exception.ExternalServiceException;
-import com.ozan.exchange.http.response.Response;
+import com.ozan.exchange.web.util.Response;
 import com.ozan.exchange.provider.ForgienExchangeProvider;
 import com.ozan.exchange.util.StringUtils;
 import feign.FeignException;

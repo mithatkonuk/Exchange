@@ -1,6 +1,6 @@
 package com.ozan.exchange;
 
-import com.ozan.exchange.dto.Exchange;
+import com.ozan.exchange.domain.Exchange;
 import com.ozan.exchange.provider.ForgienExchangeProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

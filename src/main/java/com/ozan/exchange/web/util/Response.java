@@ -1,4 +1,4 @@
-package com.ozan.exchange.http.response;
+package com.ozan.exchange.web.util;
 
 import lombok.Builder;
 import lombok.Data;
