@@ -64,7 +64,7 @@ public class ForgienExchangeExternalResource
 
     @OzanExecutionTimeLogged
     @PostMapping( value = "/conversion" )
-    public Response exchange( @RequestBody @NotNull @Valid  ForgienConversion forgienConversion )
+    public Response exchange( @RequestBody @NotNull @Valid ForgienConversion forgienConversion )
                     throws FeignException
     {
         try
