@@ -31,6 +31,7 @@ public class ForgienExchangeExternalResource
 {
     private static final Logger logger =
                     LoggerFactory.getLogger(ForgienExchangeExternalResource.class);
+
     private final ForgienExchangeProvider forgienExchangeProvider;
 
     // Dot use lombok @AllArgsConstructor lombok doesnt know about which Qualifier will be inject
@@ -62,7 +63,7 @@ public class ForgienExchangeExternalResource
     }
 
     @OzanExecutionTimeLogged
-    @PostMapping( value = "/exchange/calculate" )
+    @PostMapping( value = "/conversion" )
     public Response exchange( @RequestBody @NotNull @Valid  ForgienConversion forgienConversion )
                     throws FeignException
     {

@@ -22,7 +22,7 @@ public class ExChangeConfiguration
     private ForgienExternalExChangeConfiguration forgienExternalExChangeConfiguration;
 
     /*
-        if we disable feign so this will be primary
+        secondary provider to take service from external resource
      */
     @ConditionalOnProperty( prefix = "forgien_exchange_providers.rest", name = "enabled", havingValue = "true" )
     @Bean
