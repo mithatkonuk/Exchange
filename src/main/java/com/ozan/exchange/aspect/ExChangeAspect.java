@@ -27,7 +27,7 @@ public class ExChangeAspect
     }
 
     @Around( "inWebLayer() && logging(logged)" )
-    public Object around( ProceedingJoinPoint joinPoint, Logged logged ) throws Throwable
+    public Object logExecutionTime( ProceedingJoinPoint joinPoint, Logged logged ) throws Throwable
     {
         long start = System.currentTimeMillis();
 
