@@ -2,9 +2,10 @@ package com.ozan.exchange;
 
 import com.ozan.exchange.dto.Exchange;
 import com.ozan.exchange.provider.ForgienExchangeProvider;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,18 +24,31 @@ public class ForeignExchangeApplication
     }
 
     @Component
-    @AllArgsConstructor
     public class Runner implements CommandLineRunner
     {
-        private final ForgienExchangeProvider exchangeProvider;
+        @Autowired
+        @Qualifier( "${forgien_exchange_providers.default.name}" )
+        private ForgienExchangeProvider defaultProvider;
+
+        @Autowired
+        @Qualifier( "${forgien_exchange_providers.external.name}" )
+        private ForgienExchangeProvider internalProvider;
+
+        //        AllArgsConstructor is not capability to know which qualifier
+        //        @Autowired
+        //        public Runner( @Qualifier( "${forgien_exchange_providers.external.name}" ) ForgienExchangeProvider externalProvider) {
+        //
+        //        }
 
         @Override
         public void run( String... args )
         {
-            Exchange exchange = exchangeProvider.getExchange("EUR", "TRY");
+            Exchange exchange = defaultProvider.getExchange("EUR", "TRY");
+
+            Exchange exchange2 = internalProvider.getExchange("EUR", "TRY");
 
             logger.info("exchange " + exchange.toString());
-
+            logger.info("exchange2 " + exchange2.toString());
         }
     }
 }

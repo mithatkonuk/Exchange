@@ -29,7 +29,6 @@ public class ExChangeControllerAdvice
         });
         ResponseError responseError = ResponseError.builder().
                         errorCode(1).message(stringBuilder.toString()).build();
-        Response response = Response.builder().error(responseError).build();
-        return response;
+        return  Response.builder().error(responseError).build();
     }
 }

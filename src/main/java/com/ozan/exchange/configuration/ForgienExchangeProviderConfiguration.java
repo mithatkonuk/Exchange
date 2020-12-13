@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties( prefix = "forgien-exchange-providers.external" )
+@ConfigurationProperties( prefix = "forgien-exchange-providers.default" )
 @Data
 public class ForgienExchangeProviderConfiguration
 {
