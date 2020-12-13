@@ -9,8 +9,6 @@ import com.ozan.exchange.http.response.Response;
 import com.ozan.exchange.provider.ForgienExchangeProvider;
 import com.ozan.exchange.util.StringUtils;
 import feign.FeignException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.annotation.Validated;
@@ -29,9 +27,6 @@ import java.util.Map;
 @Validated
 public class ForgienExchangeExternalResource
 {
-    private static final Logger logger =
-                    LoggerFactory.getLogger(ForgienExchangeExternalResource.class);
-
     private final ForgienExchangeProvider forgienExchangeProvider;
 
     // Dot use lombok @AllArgsConstructor lombok doesnt know about which Qualifier will be inject
@@ -53,7 +48,6 @@ public class ForgienExchangeExternalResource
         {
             // TODO : check not supported money throw exception we need to handle those exceptions
             Exchange exchange = this.forgienExchangeProvider.getExchange(currArr[0], currArr[1]);
-            logger.error(exchange.toString());
             return Response.builder().data(exchange).build();
         }
         else
@@ -87,7 +81,6 @@ public class ForgienExchangeExternalResource
 
             forgienConversion.setConversion(rate * amount);
             forgienConversion.setDate(Date.from(Instant.now()));
-
             return Response.builder().data(forgienConversion).build();
         }
         catch( FeignException e )
