@@ -39,9 +39,9 @@
         </encoder>
     </appender>
 
-
     <logger name="defaultErrorFileLogger" level="error" additivity="false">
         <appender-ref ref="fileRollingAppender"/>
+        <appender-ref ref="consoleAppender"/>
     </logger>
 
     <root level="info">
