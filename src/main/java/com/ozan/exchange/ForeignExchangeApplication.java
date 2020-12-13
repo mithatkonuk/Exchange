@@ -24,8 +24,10 @@ public class ForeignExchangeApplication
     }
 
     @Component
-    public class Runner implements CommandLineRunner
+    public static class Runner implements CommandLineRunner
     {
+
+        private static final Logger logger = LoggerFactory.getLogger("defaultErrorFileLogger");
         @Autowired
         @Qualifier( "${forgien_exchange_providers.default.name}" )
         private ForgienExchangeProvider defaultProvider;
@@ -47,8 +49,8 @@ public class ForeignExchangeApplication
 
             Exchange exchange2 = internalProvider.getExchange("EUR", "TRY");
 
-            logger.info("exchange " + exchange.toString());
-            logger.info("exchange2 " + exchange2.toString());
+            logger.error("exchange " + exchange.toString());
+            logger.error("exchange2 " + exchange2.toString());
         }
     }
 }
