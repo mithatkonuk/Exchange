@@ -5,6 +5,6 @@ import java.lang.annotation.*;
 @Retention( RetentionPolicy.RUNTIME )
 @Documented
 @Target( ElementType.METHOD )
-public @interface OzanLogged
+public @interface OzanExecutionTimeLogged
 {
 }

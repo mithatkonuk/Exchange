@@ -29,12 +29,12 @@ public class ForeignExchangeApplication
 
         private static final Logger logger = LoggerFactory.getLogger("defaultErrorFileLogger");
         @Autowired
-        @Qualifier( "${forgien_exchange_providers.default.name}" )
+        @Qualifier( "${forgien_exchange_providers.feign.name}" )
         private ForgienExchangeProvider defaultProvider;
 
         @Autowired
-        @Qualifier( "${forgien_exchange_providers.external.name}" )
-        private ForgienExchangeProvider internalProvider;
+        @Qualifier( "${forgien_exchange_providers.rest.name}" )
+        private ForgienExchangeProvider forgienExchangeProvider;
 
         //        AllArgsConstructor is not capability to know which qualifier
         //        @Autowired
@@ -47,7 +47,7 @@ public class ForeignExchangeApplication
         {
             Exchange exchange = defaultProvider.getExchange("EUR", "TRY");
 
-            Exchange exchange2 = internalProvider.getExchange("EUR", "TRY");
+            Exchange exchange2 = forgienExchangeProvider.getExchange("EUR", "TRY");
 
             logger.error("exchange " + exchange.toString());
             logger.error("exchange2 " + exchange2.toString());

@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties( prefix = "forgien-exchange-providers.external" )
+@ConfigurationProperties( prefix = "forgien-exchange-providers.rest" )
 public class ForgienExternalExChangeConfiguration
 {
 
     private boolean enable;
-    private long read;
-    private long connect;
+    private int read;
+    private int connect;
     private String name;
     private String url;
     private String exchangePath;
