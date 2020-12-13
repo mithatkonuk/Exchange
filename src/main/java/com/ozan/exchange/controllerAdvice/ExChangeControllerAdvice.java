@@ -1,10 +1,12 @@
 package com.ozan.exchange.controllerAdvice;
 
+import com.ozan.exchange.error.ErrorCode;
 import com.ozan.exchange.exception.ExternalServiceException;
 import com.ozan.exchange.http.response.Response;
 import com.ozan.exchange.http.response.ResponseError;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 
 import static com.ozan.exchange.error.ErrorCode.EXTERNAL_SERVICE_PROVIDER.EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND;
+import static com.ozan.exchange.error.ErrorCode.EXTERNAL_SERVICE_PROVIDER.METHOD_ARGUMENT_INVALID;
 
 @ControllerAdvice
 public class ExChangeControllerAdvice
@@ -59,14 +62,27 @@ public class ExChangeControllerAdvice
     Response handleResourceNotFound( final FeignException exception,
                     final HttpServletRequest request )
     {
+        return buildMessage(exception.getMessage(), exception,
+                        EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND);
+    }
+
+    @ExceptionHandler( MethodArgumentNotValidException.class )
+    @ResponseStatus( value = HttpStatus.BAD_REQUEST )
+    public @ResponseBody
+    Response handleResourceNotFound( final MethodArgumentNotValidException exception,
+                    final HttpServletRequest request )
+    {
+        return buildMessage(exception.getMessage(), exception, METHOD_ARGUMENT_INVALID);
+    }
+
+    private Response buildMessage( String message, Exception exception, ErrorCode errorCode )
+    {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("message:").append(exception.getMessage()).append(" ").append("-")
-                        .append("error-code:")
-                        .append(EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND.getErrorCode());
+        stringBuilder.append("message:").append(message).append(" ").append("-").append(" ")
+                        .append("error-code:").append(errorCode.getErrorCode());
 
         ResponseError responseError = ResponseError.builder().
-                        errorCode(EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND.getErrorCode())
-                        .message(exception.getMessage()).description(stringBuilder.toString())
+                        errorCode(errorCode.getErrorCode()).description(stringBuilder.toString())
                         .build();
         return Response.builder().error(responseError).build();
     }

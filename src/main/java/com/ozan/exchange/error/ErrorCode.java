@@ -20,8 +20,11 @@ public class ErrorCode
 
     public static class EXTERNAL_SERVICE_PROVIDER
     {
-        public static final ErrorCode EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND = new ErrorCode(1,
+        public static final ErrorCode EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND = new ErrorCode(0,
                         "External service exchange given source / target is not supported");
+
+        public static final ErrorCode METHOD_ARGUMENT_INVALID =
+                        new ErrorCode(1, "Given Argument is not valid");
     }
 
 }
