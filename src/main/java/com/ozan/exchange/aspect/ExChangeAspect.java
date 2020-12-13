@@ -1,6 +1,6 @@
 package com.ozan.exchange.aspect;
 
-import com.ozan.exchange.annotation.Logged;
+import com.ozan.exchange.annotation.OzanLogged;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -22,12 +22,13 @@ public class ExChangeAspect
     }
 
     @Pointcut( "@annotation(logged)" )
-    public void logging( Logged logged )
+    public void logging( OzanLogged logged )
     {
     }
 
     @Around( "inWebLayer() && logging(logged)" )
-    public Object logExecutionTime( ProceedingJoinPoint joinPoint, Logged logged ) throws Throwable
+    public Object logExecutionTime( ProceedingJoinPoint joinPoint, OzanLogged logged )
+                    throws Throwable
     {
         long start = System.currentTimeMillis();
 

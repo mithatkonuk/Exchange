@@ -1,10 +1,8 @@
 package com.ozan.exchange.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
-public class ForgienExchangeService
+public class ForgienExchangeService implements ExChangeService
 {
 }

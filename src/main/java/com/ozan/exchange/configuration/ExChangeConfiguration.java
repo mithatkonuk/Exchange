@@ -19,19 +19,19 @@ import org.springframework.web.client.RestTemplate;
 public class ExChangeConfiguration
 {
 
-    @Value( "${forgien_exchange_providers.internal.timeout.connect}" )
+    @Value( "${forgien_exchange_providers.external.timeout.connect}" )
     private int connectTimeOut;
 
-    @Value( "${forgien_exchange_providers.internal.timeout.read}" )
+    @Value( "${forgien_exchange_providers.external.timeout.read}" )
     private int readTimeOut;
 
     /*
         if we disable feign so this will be primary
      */
-    @ConditionalOnProperty( prefix = "forgien_exchange_providers.internal", name = "enabled",
+    @ConditionalOnProperty( prefix = "forgien_exchange_providers.external", name = "enabled",
                     havingValue = "true" )
     @Bean
-    @Qualifier("${forgien_exchange_providers.internal.name}")
+    @Qualifier("${forgien_exchange_providers.external.name}")
     public RateApiInternalExchangeProvider rateApiInternalExchangeProvider(
                     RestTemplateBuilder builder )
     {

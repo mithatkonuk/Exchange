@@ -1,11 +1,12 @@
 package com.ozan.exchange.controller;
 
-import com.ozan.exchange.annotation.Logged;
+import com.ozan.exchange.annotation.OzanLogged;
 import com.ozan.exchange.dto.Exchange;
 import com.ozan.exchange.http.response.Response;
 import com.ozan.exchange.provider.ForgienExchangeProvider;
 import com.ozan.exchange.util.StringUtils;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,13 +19,22 @@ import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping( "external-resource" )
-@AllArgsConstructor
 @Validated
 public class ForgienExchangeExternalResource
 {
+
     private final ForgienExchangeProvider forgienExchangeProvider;
 
-    @Logged
+    // Dot use lombok @AllArgsConstructor lombok doesnt know about which Qualifier will be inject
+    @Autowired
+    public ForgienExchangeExternalResource(
+                    @Qualifier( "${forgien_exchange_providers.default.name}" )
+                                    ForgienExchangeProvider forgienExchangeProvider )
+    {
+        this.forgienExchangeProvider = forgienExchangeProvider;
+    }
+
+    @OzanLogged
     @GetMapping( value = "/exchange" )
     public Response exchange(
                     @NotNull @NotBlank @NotEmpty @RequestParam( "currencies" ) String currencies )
