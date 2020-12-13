@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
  * Extendable for configuration Exchange application
  */
 @Configuration
+@EnableAspectJAutoProxy
 @ComponentScan( basePackages = "com.ozan.exchange" )
 @Import( { ForgienExchangeProviderConfiguration.class } )
 public class ExChangeConfiguration

@@ -1,5 +1,6 @@
 package com.ozan.exchange.controller;
 
+import com.ozan.exchange.annotation.Logged;
 import com.ozan.exchange.dto.Exchange;
 import com.ozan.exchange.http.response.Response;
 import com.ozan.exchange.provider.ForgienExchangeProvider;
@@ -25,6 +26,7 @@ public class ForgienExchangeExternalResource
     @Qualifier( "${forgien_exchange_providers.external.name}" )
     private final ForgienExchangeProvider forgienExchangeProvider;
 
+    @Logged
     @GetMapping( value = "/exchange" )
     public Response exchange(
                     @NotNull @NotBlank @NotEmpty @RequestParam( "currencies" ) String currencies )
