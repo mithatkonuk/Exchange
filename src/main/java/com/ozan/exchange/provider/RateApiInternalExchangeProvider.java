@@ -15,6 +15,6 @@ public class RateApiInternalExchangeProvider implements ForgienExchangeProvider
     @Override
     public Exchange getExchange( String base, String symbols )
     {
-        return restTemplate.getForObject("https://api.ratesapi.io/api/latest",Exchange.class);
+        return restTemplate.getForObject("https://api.ratesapi.io/api/latest", Exchange.class);
     }
 }

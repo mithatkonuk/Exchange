@@ -6,7 +6,6 @@ import com.ozan.exchange.http.response.Response;
 import com.ozan.exchange.provider.ForgienExchangeProvider;
 import com.ozan.exchange.util.StringUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,6 @@ import javax.validation.constraints.NotNull;
 @Validated
 public class ForgienExchangeExternalResource
 {
-    @Qualifier( "${forgien_exchange_providers.external.name}" )
     private final ForgienExchangeProvider forgienExchangeProvider;
 
     @Logged

@@ -28,10 +28,11 @@ public class ExChangeConfiguration
     /*
         if we disable feign so this will be primary
      */
-    @ConditionalOnProperty( prefix = "forgien_exchange_providers.internal", name = "enabled", havingValue = "true" )
+    @ConditionalOnProperty( prefix = "forgien_exchange_providers.internal", name = "enabled",
+                    havingValue = "true" )
     @Bean
-    @Qualifier( "${forgien_exchange_providers.internal.name}" )
-    RateApiInternalExchangeProvider restTemplateInternalExchangeProvider(
+    @Qualifier("${forgien_exchange_providers.internal.name}")
+    public RateApiInternalExchangeProvider rateApiInternalExchangeProvider(
                     RestTemplateBuilder builder )
     {
 
