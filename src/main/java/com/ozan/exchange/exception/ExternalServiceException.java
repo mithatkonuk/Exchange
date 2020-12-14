@@ -1,6 +1,6 @@
 package com.ozan.exchange.exception;
 
-import com.ozan.exchange.error.ErrorCode;
+import com.ozan.exchange.exception.error.ErrorCode;
 import lombok.Getter;
 
 @Getter

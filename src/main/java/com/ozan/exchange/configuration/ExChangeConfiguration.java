@@ -1,6 +1,6 @@
 package com.ozan.exchange.configuration;
 
-import com.ozan.exchange.provider.RateApiExternalExchangeProvider;
+import com.ozan.exchange.rateProvider.RateApiExternalExchangeProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -1,16 +1,15 @@
-package com.ozan.exchange.domain;
+package com.ozan.exchange.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.Date;
 
 @Data
 @JsonInclude( JsonInclude.Include.NON_NULL )
-public class ForgienConversion
+public class ExchangeRequest
 {
     @NotNull
     private String base;
@@ -18,6 +17,8 @@ public class ForgienConversion
     private String symbol;
     @PositiveOrZero
     private Double amount;
-    private Double conversion;
-    private Date date;
+
+    @NotEmpty
+    @NotNull
+    private String token;
 }

@@ -1,7 +1,7 @@
-package com.ozan.exchange.provider;
+package com.ozan.exchange.rateProvider;
 
 import com.ozan.exchange.configuration.ForgienExternalExChangeConfiguration;
-import com.ozan.exchange.domain.Exchange;
+import com.ozan.exchange.dto.Exchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +13,7 @@ public class RateApiExternalExchangeProvider implements ForgienExchangeProvider
 {
     private static final Logger logger =
                     LoggerFactory.getLogger(RateApiExternalExchangeProvider.class);
+
     private final RestTemplate restTemplate;
     private final ForgienExternalExChangeConfiguration configuration;
     private String URI;

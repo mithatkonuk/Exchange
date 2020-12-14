@@ -1,6 +1,7 @@
 package com.ozan.exchange.advice;
 
-import com.ozan.exchange.error.ErrorCode;
+import com.ozan.exchange.exception.error.ErrorCode;
+import com.ozan.exchange.exception.ExchangeServiceParamException;
 import com.ozan.exchange.exception.ExternalServiceException;
 import com.ozan.exchange.web.util.Response;
 import com.ozan.exchange.web.util.ResponseError;
@@ -15,71 +16,68 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 
-import static com.ozan.exchange.error.ErrorCode.EXTERNAL_SERVICE_PROVIDER.EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND;
-import static com.ozan.exchange.error.ErrorCode.EXTERNAL_SERVICE_PROVIDER.METHOD_ARGUMENT_INVALID;
+import static com.ozan.exchange.exception.error.ErrorCode.EXTERNAL_SERVICE_PROVIDER.EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND;
+import static com.ozan.exchange.exception.error.ErrorCode.EXTERNAL_SERVICE_PROVIDER.METHOD_ARGUMENT_INVALID;
+import static com.ozan.exchange.exception.error.ErrorCode.GENERIC.GENERIC_ERROR;
 
 @ControllerAdvice
 public class ExChangeControllerAdvice
 {
 
+    /// ---- Handle methods begin
+
     @ExceptionHandler( ConstraintViolationException.class )
-    @ResponseStatus( value = HttpStatus.BAD_REQUEST )
+    @ResponseStatus( value = HttpStatus.INTERNAL_SERVER_ERROR )
     public @ResponseBody
-    Response handleResourceNotFound( final ConstraintViolationException exception,
+    Response handleConstraintViolationException( final ConstraintViolationException exception,
                     final HttpServletRequest request )
     {
-        StringBuilder stringBuilder = new StringBuilder();
-        // ExceptionUtils needs
-        exception.getConstraintViolations().forEach(constraintViolation -> {
-            stringBuilder.append(constraintViolation.getMessage()).append("-")
-                            .append(constraintViolation.getPropertyPath()).append(",");
-        });
-        ResponseError responseError = ResponseError.builder().
-                        errorCode(1).message(stringBuilder.toString()).build();
-        return Response.builder().error(responseError).build();
+        return buildMessage(exception, GENERIC_ERROR);
     }
 
     @ExceptionHandler( ExternalServiceException.class )
     @ResponseStatus( value = HttpStatus.BAD_REQUEST )
     public @ResponseBody
-    Response handleResourceNotFound( final ExternalServiceException exception,
+    Response handleExternalServiceException( final ExternalServiceException exception,
                     final HttpServletRequest request )
     {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("message:").append(exception.getMessage()).append(" ").append("-")
-                        .append("error-code:").append(exception.getErrorCode().getErrorCode());
-
-        ResponseError responseError = ResponseError.builder().
-                        errorCode(exception.getErrorCode().getErrorCode())
-                        .message(exception.getMessage()).description(stringBuilder.toString())
-                        .build();
-        return Response.builder().error(responseError).build();
+        return buildMessage(exception, exception.getErrorCode());
     }
 
     @ExceptionHandler( FeignException.class )
     @ResponseStatus( value = HttpStatus.BAD_REQUEST )
     public @ResponseBody
-    Response handleResourceNotFound( final FeignException exception,
+    Response handleFeignException( final FeignException exception,
                     final HttpServletRequest request )
     {
-        return buildMessage(exception.getMessage(), exception,
-                        EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND);
+        return buildMessage(exception, EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND);
     }
 
     @ExceptionHandler( MethodArgumentNotValidException.class )
     @ResponseStatus( value = HttpStatus.BAD_REQUEST )
     public @ResponseBody
-    Response handleResourceNotFound( final MethodArgumentNotValidException exception,
+    Response handleMethodArgumentNotValidException( final MethodArgumentNotValidException exception,
                     final HttpServletRequest request )
     {
-        return buildMessage(exception.getMessage(), exception, METHOD_ARGUMENT_INVALID);
+        return buildMessage(exception, METHOD_ARGUMENT_INVALID);
     }
 
-    private Response buildMessage( String message, Exception exception, ErrorCode errorCode )
+    @ExceptionHandler( ExchangeServiceParamException.class )
+    @ResponseStatus( value = HttpStatus.BAD_REQUEST )
+    public @ResponseBody
+    Response handleExchangeServiceParamException( final ExchangeServiceParamException exception,
+                    final HttpServletRequest request )
+    {
+        return buildMessage(exception, exception.getErrorCode());
+    }
+
+    // --- Handle Method end
+
+    private Response buildMessage( Exception exception, ErrorCode errorCode )
     {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("message:").append(message).append(" ").append("-").append(" ")
-                        .append("error-code:").append(errorCode.getErrorCode());
+        stringBuilder.append("[message]:").append(exception.getMessage()).append(" ").append("-")
+                        .append(" ").append("[error-code]:").append(errorCode.getErrorCode());
 
         ResponseError responseError = ResponseError.builder().
                         errorCode(errorCode.getErrorCode()).description(stringBuilder.toString())

@@ -16,7 +16,7 @@ public class ExChangeAspect
 
     private static final Logger logger = LoggerFactory.getLogger(ExChangeAspect.class);
 
-    @Pointcut( "execution(* com.ozan.exchange.controller..*.*(..))" )
+    @Pointcut( "execution(* com.ozan.exchange.resource..*.*(..))" )
     public void inWebLayer()
     {
     }
@@ -30,6 +30,7 @@ public class ExChangeAspect
     public Object logExecutionTime( ProceedingJoinPoint joinPoint, OzanExecutionTimeLogged logged )
                     throws Throwable
     {
+
         long start = System.currentTimeMillis();
 
         Object proceed = joinPoint.proceed();
