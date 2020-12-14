@@ -1,8 +1,7 @@
 TODO : 
       
-	- Service side implement other functionalities both of provider
-    - Aspect needs log and ExceptionUtils , remove stringbuilder etc
-	- Api Doc 
-	- Swagger
-	- in aspect side and also controller advice import logging
-	- centralize error logging ( file or elk)
+	- Control all api side response and requests
+    - ExceptionUtils needs to be implement for controller advice
+    - Swagger for documentation - spring-doc
+	- Logger add into controller advice and also aspect
+	- centralize error logging (elk or etc)
