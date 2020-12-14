@@ -35,14 +35,19 @@ public class ErrorCode
         public static final ErrorCode ILLEGAL_ARGUMENT_NULL =
                         new ErrorCode(3, "Given Parameter must not be null");
 
-
         public static final ErrorCode ILLEGAL_ARGUMENT_NOT_ACCEPTABLE =
                         new ErrorCode(4, "Given Parameter is not acceptable");
+
+
+        public static final ErrorCode ILLEGAL_ARGUMENT_FORMAT_PROBLEM =
+                        new ErrorCode(5, "Given Parameter format problem exist");
+
+        public static final ErrorCode NOT_FOUND = new ErrorCode(6, "Requested data is not found");
     }
 
     public static class GENERIC
     {
-        public static final ErrorCode GENERIC_ERROR = new ErrorCode(5, "Generic Error occured");
+        public static final ErrorCode GENERIC_ERROR = new ErrorCode(7, "Generic Error occured");
 
     }
 

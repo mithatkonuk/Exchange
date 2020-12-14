@@ -5,14 +5,12 @@ import com.ozan.exchange.dto.Exchange;
 import com.ozan.exchange.dto.ExchangeRequest;
 import com.ozan.exchange.dto.ExchangeResponse;
 import com.ozan.exchange.exception.ExchangeServiceParamException;
-import com.ozan.exchange.exception.ExternalServiceException;
 import com.ozan.exchange.exception.error.ErrorCode;
 import com.ozan.exchange.rateProvider.RateApiProvider;
 import com.ozan.exchange.service.ExchangeConversionService;
 import com.ozan.exchange.util.DateUtils;
 import com.ozan.exchange.util.StringUtils;
 import com.ozan.exchange.web.util.Response;
-import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
 
 @RestController
 @RequestMapping( "external-resource" )
@@ -51,7 +48,12 @@ public class ForgienExchangeExternalResource
         {
             Exchange exchange = this.rateApiProvider.getExchange(currArr[0], currArr[1]);
 
-            return Response.builder().data(exchange).build();
+            ExchangeResponse exchangeResponse =
+                            ExchangeResponse.builder().base(exchange.getBase()).symbol(currArr[1])
+                                            .rate(exchange.getRates().get(currArr[1]))
+                                            .date(DateUtils.nowAsDate())
+                                            .build();
+            return Response.builder().data(exchangeResponse).build();
         }
         else
         {
@@ -71,60 +73,29 @@ public class ForgienExchangeExternalResource
         Exchange exchange = this.rateApiProvider
                         .getExchange(exchangeRequest.getBase(), exchangeRequest.getSymbol());
 
-        // calculate given amount
-        Double amount = exchangeRequest.getAmount();
-
-        Double rate = exchange.getRates().get(exchangeRequest.getSymbol());
-
-        if(null == rate)
-        {
-            rate = 0d;
-        }
-
-        ExchangeResponse exchangeResponse =
-                        ExchangeResponse.builder().amount(exchangeRequest.getAmount())
-                                        .base(exchangeRequest.getBase())
-                                        .symbol(exchangeRequest.getSymbol())
-                                        .conversion(rate * amount).date(DateUtils.nowAsDate())
-                                        .token(exchangeRequest.getToken())
-                                        .rate(rate).build();
-
-        // save exchange transaction
-        exchangeConversionService.saveConversion(exchangeResponse);
-
         // return calculate amount with rate
-        return Response.builder().data(exchangeResponse).build();
-
+        return Response.builder().data(exchangeConversionService
+                        .saveConversion(exchangeRequest.getBase(), exchangeRequest.getSymbol(),
+                                        exchangeRequest.getAmount(),
+                                        exchange.getRates().get(exchangeRequest.getSymbol()),
+                                        exchangeRequest.isDetail())).build();
     }
 
     @OzanExecutionTimeLogged
-    @GetMapping( value = "/conversion" )
+    @PutMapping( value = "/conversion" )
     public Response exchange( @RequestParam( "base" ) String base,
                     @RequestParam( "symbol" ) String symbol,
-                    @RequestParam( "amount" ) Double amount )
+                    @RequestParam( "amount" ) Double amount,
+                    @RequestParam( name = "detail", defaultValue = "false" ) Boolean detail )
     {
 
         // request from external service
         Exchange exchange = this.rateApiProvider.getExchange(base, symbol);
 
-        // calculate given amount
-        Double rate = exchange.getRates().get(symbol);
-
-        if(null == rate)
-        {
-            rate = 0d;
-        }
-
-        ExchangeResponse exchangeResponse =
-                        ExchangeResponse.builder().amount(amount).base(base).symbol(symbol)
-                                        .conversion(rate * amount).date(DateUtils.nowAsDate())
-                                        .rate(rate).build();
-
-        // save exchange transaction
-        exchangeConversionService.saveConversion(exchangeResponse);
-
         // return calculate amount with rate
-        return Response.builder().data(rate * amount).build();
+        return Response.builder().data(exchangeConversionService
+                        .saveConversion(base, symbol, amount, exchange.getRates().get(symbol),
+                                        detail)).build();
 
     }
 }

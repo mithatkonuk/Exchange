@@ -2,6 +2,7 @@ package com.ozan.exchange.service;
 
 import com.ozan.exchange.domain.ExchangeConversion;
 import com.ozan.exchange.dto.ExchangeResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.Date;
 import java.util.List;
@@ -11,8 +12,9 @@ public interface ExchangeConversionService
 {
     Optional<ExchangeConversion> conversions( final String transaction );
 
-    Optional<List<ExchangeConversion>> conversions( final Date dateCreated );
+    Page<ExchangeConversion> conversions( final Date dateCreated, int offset, int pageSize );
 
-    void saveConversion( ExchangeResponse response );
+    ExchangeResponse saveConversion( String base, String symbol, Double amount, Double rate,
+                    boolean detail );
 
 }

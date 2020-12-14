@@ -18,7 +18,5 @@ public class ExchangeRequest
     @PositiveOrZero
     private Double amount;
 
-    @NotEmpty
-    @NotNull
-    private String token;
+    private boolean detail;
 }

@@ -3,7 +3,9 @@ package com.ozan.exchange.util;
 import com.ozan.exchange.exception.ExchangeServiceParamException;
 import com.ozan.exchange.exception.error.ErrorCode;
 
-import java.text.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -36,7 +38,7 @@ public class DateUtils
         catch( ParseException e )
         {
             throw new ExchangeServiceParamException(
-                            ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE);
+                            ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_FORMAT_PROBLEM);
         }
     }
 

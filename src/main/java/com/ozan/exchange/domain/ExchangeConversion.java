@@ -9,9 +9,8 @@ import java.util.Date;
 @Table( name = "exchange_conversion" )
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Builder
+@Getter
 public class ExchangeConversion extends AbstractBaseEntity
 {
 

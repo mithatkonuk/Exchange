@@ -8,7 +8,6 @@ CREATE TABLE EXCHANGE_CONVERSION
     conversion        DOUBLE    DEFAULT 0.0,
     date_created      DATE      DEFAULT CURRENT_DATE,
     timestamp_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    token TEXT NOT NULL,
     PRIMARY KEY (transaction_id)
 );
 

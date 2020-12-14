@@ -16,7 +16,7 @@ public abstract class AbstractBaseEntity implements Serializable
 
     @Id
     @Column( name = "transaction_id", nullable = false )
-    private UUID transaction;
+    protected UUID transaction;
 
     public AbstractBaseEntity()
     {

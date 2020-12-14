@@ -1,16 +1,16 @@
 package com.ozan.exchange.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
 import java.util.Date;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@JsonInclude( JsonInclude.Include.NON_NULL )
 public class ExchangeResponse
 {
     private String base;
@@ -19,5 +19,5 @@ public class ExchangeResponse
     private Double conversion;
     private Date date;
     private Double rate;
-    private String token;
+    private String transaction;
 }
