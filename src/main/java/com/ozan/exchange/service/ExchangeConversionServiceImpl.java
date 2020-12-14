@@ -10,10 +10,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,15 +31,14 @@ public class ExchangeConversionServiceImpl implements ExchangeConversionService
     }
 
     @Override
-    public Page<ExchangeConversion> conversions( final Date dateCreated, int offset,
-                    int pageSize )
+    public Page<ExchangeConversion> conversions( final Date dateCreated, int offset, int pageSize )
     {
         AssertUtils.assertNotNull(dateCreated);
         return exchangeConversionRepo
                         .findByDateCreated(dateCreated, PageRequest.of(offset, pageSize));
     }
 
-    @Transactional( rollbackOn = DataAccessException.class )
+    @Transactional( rollbackFor = DataAccessException.class )
     @Override
     public ExchangeResponse saveConversion( String base, String symbol, Double amount, Double rate,
                     boolean detail )
