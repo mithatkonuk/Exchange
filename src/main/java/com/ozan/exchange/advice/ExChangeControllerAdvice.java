@@ -92,7 +92,7 @@ public class ExChangeControllerAdvice
                         .append(" ").append("[error-code]:").append(errorCode.getErrorCode());
 
         ResponseError responseError = ResponseError.builder().
-                        errorCode(errorCode.getErrorCode()).description(stringBuilder.toString())
+                        errorCode(errorCode.getErrorCode()).message(stringBuilder.toString())
                         .build();
         return Response.builder().error(responseError).build();
     }

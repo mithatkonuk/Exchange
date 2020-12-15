@@ -4,25 +4,33 @@ import com.ozan.exchange.dto.Exchange;
 import com.ozan.exchange.exception.ExternalServiceException;
 import com.ozan.exchange.exception.error.ErrorCode;
 import feign.FeignException;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component( "rateApiProvider" )
-@AllArgsConstructor
 public class RateApiProvider implements ForgienExchangeProvider
 {
 
     private static final Logger logger = LoggerFactory.getLogger(RateApiProvider.class);
-    @Qualifier( "${forgien_exchange_providers.feign.name}" )
-    @Autowired
+
     private ForgienExchangeProvider forgienExchangeProvider;
+
+    @Value( "${forgien_exchange_providers.feign.name}" )
+    private String providerName;
+
+    @Autowired
+    public RateApiProvider( @Qualifier( "${forgien_exchange_providers.feign.name}" )
+                    ForgienExchangeProvider forgienExchangeProvider )
+    {
+        this.forgienExchangeProvider = forgienExchangeProvider;
+    }
 
     @Cacheable( value = "${forgien.service.provider.request.cache.name}", keyGenerator = "forgienCacheKeyGenerator" )
     @Override
@@ -30,7 +38,11 @@ public class RateApiProvider implements ForgienExchangeProvider
     {
         try
         {
-            return forgienExchangeProvider.getExchange(base, symbols);
+            Exchange exchange = forgienExchangeProvider.getExchange(base, symbols);
+
+            logger.info("[external-service (" + providerName + ")] :  " + exchange.toString());
+
+            return exchange;
         }
         catch( FeignException e )
         {

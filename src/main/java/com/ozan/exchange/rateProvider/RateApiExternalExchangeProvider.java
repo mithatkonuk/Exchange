@@ -30,7 +30,10 @@ public class RateApiExternalExchangeProvider implements ForgienExchangeProvider
     public Exchange getExchange( String base, String symbols )
     {
         this.URI = this.URI.replace("{base}", base).replace("{symbols}", symbols);
-        logger.info("Generated url : " + this.URI);
-        return restTemplate.getForObject(this.URI, Exchange.class);
+        logger.info("[external-service (" + configuration.getName() + ")]" + " - Generated url : " +
+                        this.URI);
+        Exchange exchange = restTemplate.getForObject(this.URI, Exchange.class);
+        logger.info("[external-service-response] - " + exchange.toString());
+        return exchange;
     }
 }

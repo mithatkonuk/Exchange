@@ -15,6 +15,4 @@ public class ResponseError
 {
     private int errorCode;
     private String message;
-    private String description;
-    private String trace;
 }

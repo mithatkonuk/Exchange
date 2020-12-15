@@ -5,6 +5,8 @@ import com.ozan.exchange.dto.OzanExchangePaging;
 import com.ozan.exchange.service.ExchangeConversionService;
 import com.ozan.exchange.web.util.Response;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,8 @@ public class ConversionHistoryController
     private static final String DEFAULT_PAGE_SIZE = "10";
     private static final String DEFAULT_OFFSET_SIZE = "0";
 
+    private static final Logger logger = LoggerFactory.getLogger(ConversionHistoryController.class);
+
     private final ExchangeConversionService exchangeConversionService;
 
     @GetMapping( "/conversion/transaction" )
@@ -27,6 +31,7 @@ public class ConversionHistoryController
         ExchangeConversion exchangeConversion =
                         exchangeConversionService.exchangeHistory(transaction);
 
+        logger.info(exchangeConversion.toString());
         return Response.builder().data(exchangeConversion).build();
     }
 
@@ -48,12 +53,12 @@ public class ConversionHistoryController
                                         exchangeConversions.getPageable().getPageSize(),
                                         exchangeConversions.getTotalPages());
 
+        logger.info(ozanExchangePaging.toString());
         return Response.builder().data(ozanExchangePaging).build();
     }
 
     @GetMapping( "/conversion" )
-    public Response conversionByDate(
-                    @RequestParam( value = "created", defaultValue = "" ) String date,
+    public Response conversion( @RequestParam( value = "created", defaultValue = "" ) String date,
                     @RequestParam( value = "transaction", defaultValue = "" ) String transaction,
                     @RequestParam( value = "offset", defaultValue = DEFAULT_OFFSET_SIZE )
                                     Integer offset,
@@ -72,6 +77,7 @@ public class ConversionHistoryController
                                         exchangeConversions.getPageable().getPageSize(),
                                         exchangeConversions.getTotalPages());
 
+        logger.info(ozanExchangePaging.toString());
         return Response.builder().data(ozanExchangePaging).build();
     }
 }

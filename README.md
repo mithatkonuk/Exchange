@@ -1,7 +1,12 @@
-TODO : 
-    - Maybe we can cahce all rest cache after some time revoke and go to external service 
-	- Control all api side response and requests
-    - ExceptionUtils needs to be implement for controller advice
-    - Swagger for documentation - spring-doc
-	- Logger add into controller advice and also aspect
-	- centralize error logging (elk or etc) - loggy.com
+TODO :
+-  ExceptionUtils needs to be implement for controller advice
+
+
+- LOGGY
+
+      loggly central logging 
+
+      email:galami2745@febeks.com -- temporary mail took
+      account name : ozanExchange
+      password : Password_123456
+      URL : https://ozanexchange.loggly.com/dashboards/dashboard/2846642b-b55a-4bfa-9a0e-1979962e2fc8/view

@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Getter
+@Data
 public class ExchangeConversion extends AbstractBaseEntity
 {
 

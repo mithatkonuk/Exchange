@@ -1,12 +1,14 @@
 package com.ozan.exchange.dto;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import java.io.Serializable;
 
 @Builder
 @Getter
+@Data
 public class OzanExchangePaging implements Serializable
 {
 
