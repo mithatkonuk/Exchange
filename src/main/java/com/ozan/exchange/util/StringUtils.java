@@ -5,10 +5,21 @@ import java.util.UUID;
 public class StringUtils
 {
     private static final String WHITE_SPACE_REGEX = ".*\\w.*";
+    private static final String EMPTY_STRING_REGEX = "^$";
 
     public static boolean isEmpty( String[] arr )
     {
         return (arr == null || arr.length == 0);
+    }
+
+    public static boolean isEmpty( String word )
+    {
+        return word == null || word.matches(EMPTY_STRING_REGEX);
+    }
+
+    public static boolean isNotEmpty( String word )
+    {
+        return !isEmpty(word);
     }
 
     public static boolean isNotBlank( String[] arr )
@@ -37,5 +48,20 @@ public class StringUtils
     public static UUID generateUUID()
     {
         return UUID.randomUUID();
+    }
+
+    public static String[] split( String word, String regex )
+    {
+        return word.split(regex);
+    }
+
+    public static boolean isBlank( String word )
+    {
+        return isNotEmpty(word) && word.trim().length() == 0;
+    }
+
+    public static boolean isNotBlank( String word )
+    {
+        return isNotEmpty(word) && !isBlank(word);
     }
 }

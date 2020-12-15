@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class Response
 {
+    public static final Response EMPTY_RESPONSE = Response.builder().build();
     private Object data;
     private ResponseError error;
 }

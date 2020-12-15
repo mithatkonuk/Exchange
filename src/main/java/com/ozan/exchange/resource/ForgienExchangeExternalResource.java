@@ -42,18 +42,14 @@ public class ForgienExchangeExternalResource
     public Response exchange(
                     @NotNull @NotBlank @NotEmpty @RequestParam( "currencies" ) String currencies )
     {
-        String[] currArr = currencies.split(",");
+        String[] currArr = StringUtils.split(currencies, ",");
 
         if(StringUtils.isNotEmpty(currArr))
         {
             Exchange exchange = this.rateApiProvider.getExchange(currArr[0], currArr[1]);
-
-            ExchangeResponse exchangeResponse =
-                            ExchangeResponse.builder().base(exchange.getBase()).symbol(currArr[1])
-                                            .rate(exchange.getRates().get(currArr[1]))
-                                            .date(DateUtils.nowAsDate())
-                                            .build();
-            return Response.builder().data(exchangeResponse).build();
+            return Response.builder().data(ExchangeResponse.builder().base(exchange.getBase())
+                            .symbol(currArr[1]).rate(exchange.getRates().get(currArr[1]))
+                            .date(DateUtils.nowAsDate()).build()).build();
         }
         else
         {
@@ -75,7 +71,7 @@ public class ForgienExchangeExternalResource
 
         // return calculate amount with rate
         return Response.builder().data(exchangeConversionService
-                        .saveConversion(exchangeRequest.getBase(), exchangeRequest.getSymbol(),
+                        .saveExchangeHistory(exchangeRequest.getBase(), exchangeRequest.getSymbol(),
                                         exchangeRequest.getAmount(),
                                         exchange.getRates().get(exchangeRequest.getSymbol()),
                                         exchangeRequest.isDetail())).build();
@@ -94,7 +90,7 @@ public class ForgienExchangeExternalResource
 
         // return calculate amount with rate
         return Response.builder().data(exchangeConversionService
-                        .saveConversion(base, symbol, amount, exchange.getRates().get(symbol),
+                        .saveExchangeHistory(base, symbol, amount, exchange.getRates().get(symbol),
                                         detail)).build();
 
     }

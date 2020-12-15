@@ -1,5 +1,6 @@
 package com.ozan.exchange.advice;
 
+import com.ozan.exchange.exception.ExchangeHistoryNotFoundException;
 import com.ozan.exchange.exception.ExchangeServiceParamException;
 import com.ozan.exchange.exception.ExternalServiceException;
 import com.ozan.exchange.exception.error.ErrorCode;
@@ -8,6 +9,7 @@ import com.ozan.exchange.web.util.ResponseError;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,10 +55,11 @@ public class ExChangeControllerAdvice
         return buildMessage(exception, EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND);
     }
 
-    @ExceptionHandler( MethodArgumentNotValidException.class )
+    @ExceptionHandler( { MethodArgumentNotValidException.class,
+                    MissingServletRequestParameterException.class } )
     @ResponseStatus( value = HttpStatus.BAD_REQUEST )
     public @ResponseBody
-    Response handleMethodArgumentNotValidException( final MethodArgumentNotValidException exception,
+    Response handleMethodArgumentNotValidException( final Exception exception,
                     final HttpServletRequest request )
     {
         return buildMessage(exception, METHOD_ARGUMENT_INVALID);
@@ -69,6 +72,15 @@ public class ExChangeControllerAdvice
                     final HttpServletRequest request )
     {
         return buildMessage(exception, exception.getErrorCode());
+    }
+
+    @ExceptionHandler( ExchangeHistoryNotFoundException.class )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public @ResponseBody
+    Response handleExchangeServiceParamException( final ExchangeHistoryNotFoundException exception,
+                    final HttpServletRequest request )
+    {
+        return Response.EMPTY_RESPONSE;
     }
 
     // --- Handle Method end

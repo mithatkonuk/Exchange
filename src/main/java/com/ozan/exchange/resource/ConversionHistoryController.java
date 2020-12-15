@@ -1,11 +1,8 @@
 package com.ozan.exchange.resource;
 
 import com.ozan.exchange.domain.ExchangeConversion;
-import com.ozan.exchange.dto.PageableEntity;
-import com.ozan.exchange.exception.ExchangeServiceParamException;
-import com.ozan.exchange.exception.error.ErrorCode;
+import com.ozan.exchange.dto.OzanExchangePaging;
 import com.ozan.exchange.service.ExchangeConversionService;
-import com.ozan.exchange.util.DateUtils;
 import com.ozan.exchange.web.util.Response;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,30 +24,54 @@ public class ConversionHistoryController
     @GetMapping( "/conversion/transaction" )
     public Response conversionByTransaction( @RequestParam( "id" ) String transaction )
     {
-        ExchangeConversion exchangeConversion = exchangeConversionService.conversions(transaction)
-                        .orElseThrow(() -> new ExchangeServiceParamException(
-                                        ErrorCode.EXCHANGE_SERVICE.NOT_FOUND));
+        ExchangeConversion exchangeConversion =
+                        exchangeConversionService.exchangeHistory(transaction);
 
         return Response.builder().data(exchangeConversion).build();
     }
 
     @GetMapping( "/conversion/date" )
-    public Response conversionByDate( @RequestParam( "created" ) String date,
+    public Response conversionByDate(
+                    @RequestParam( value = "created", defaultValue = "" ) String date,
                     @RequestParam( value = "offset", defaultValue = DEFAULT_OFFSET_SIZE )
                                     Integer offset,
                     @RequestParam( value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE )
                                     Integer pageSize )
     {
+        Page<ExchangeConversion> exchangeConversions =
+                        exchangeConversionService.exchangeHistory(date, offset, pageSize);
+
+        OzanExchangePaging ozanExchangePaging = OzanExchangePaging
+                        .of(exchangeConversions.getContent(),
+                                        exchangeConversions.getTotalElements(),
+                                        exchangeConversions.getPageable().getPageNumber(),
+                                        exchangeConversions.getPageable().getPageSize(),
+                                        exchangeConversions.getTotalPages());
+
+        return Response.builder().data(ozanExchangePaging).build();
+    }
+
+    @GetMapping( "/conversion" )
+    public Response conversionByDate(
+                    @RequestParam( value = "created", defaultValue = "" ) String date,
+                    @RequestParam( value = "transaction", defaultValue = "" ) String transaction,
+                    @RequestParam( value = "offset", defaultValue = DEFAULT_OFFSET_SIZE )
+                                    Integer offset,
+                    @RequestParam( value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE )
+                                    Integer pageSize )
+    {
+
         Page<ExchangeConversion> exchangeConversions = exchangeConversionService
-                        .conversions(DateUtils.fromString(date, DateUtils.YYYY_MM_DD), offset,
+                        .exchangeHistoryByTransactionAndCreatedDate(transaction, date, offset,
                                         pageSize);
 
-        PageableEntity pageableEntity = PageableEntity.of(exchangeConversions.getContent(),
-                        exchangeConversions.getTotalElements(),
-                        exchangeConversions.getPageable().getPageNumber(),
-                        exchangeConversions.getPageable().getPageSize(),
-                        exchangeConversions.getTotalPages());
+        OzanExchangePaging ozanExchangePaging = OzanExchangePaging
+                        .of(exchangeConversions.getContent(),
+                                        exchangeConversions.getTotalElements(),
+                                        exchangeConversions.getPageable().getPageNumber(),
+                                        exchangeConversions.getPageable().getPageSize(),
+                                        exchangeConversions.getTotalPages());
 
-        return Response.builder().data(pageableEntity).build();
+        return Response.builder().data(ozanExchangePaging).build();
     }
 }
