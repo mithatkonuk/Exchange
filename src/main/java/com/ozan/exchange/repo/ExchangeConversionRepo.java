@@ -1,6 +1,6 @@
 package com.ozan.exchange.repo;
 
-import com.ozan.exchange.domain.ExchangeConversion;
+import com.ozan.exchange.domain.OzanExChangeTransaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -12,10 +12,10 @@ import java.util.UUID;
 
 @Repository
 public interface ExchangeConversionRepo
-                extends PagingAndSortingRepository<ExchangeConversion, Long>,
+                extends PagingAndSortingRepository<OzanExChangeTransaction, Long>,
                 DefaultOzanExchangeRepo
 {
-    Optional<ExchangeConversion> findByTransaction( UUID transaction );
+    Optional<OzanExChangeTransaction> findByTransaction( UUID transaction );
 
-    Page<ExchangeConversion> findByDateCreated( Date dateCreated, Pageable pageable );
+    Page<OzanExChangeTransaction> findByDateCreated( Date dateCreated, Pageable pageable );
 }

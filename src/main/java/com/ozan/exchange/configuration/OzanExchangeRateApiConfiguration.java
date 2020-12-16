@@ -15,10 +15,10 @@ import org.springframework.web.client.RestTemplate;
  * Extendable for service provider configuration
  */
 @Configuration
-public class OzanExchangeServiceProviderConfiguration extends CachingConfigurerSupport
+public class OzanExchangeRateApiConfiguration extends CachingConfigurerSupport
 {
     @Autowired
-    private ForgienExternalExChangeConfiguration forgienExternalExChangeConfiguration;
+    private OzanRateProviderRestConfiguration ozanRateProviderRestConfiguration;
 
     /*
         secondary provider to take service from external resource
@@ -32,8 +32,7 @@ public class OzanExchangeServiceProviderConfiguration extends CachingConfigurerS
 
         RestTemplate restTemplate = builder.build();
         restTemplate.setRequestFactory(getClientHttpRequestFactory());
-        return new RateApiExternalExchangeProvider(restTemplate,
-                        forgienExternalExChangeConfiguration);
+        return new RateApiExternalExchangeProvider(restTemplate, ozanRateProviderRestConfiguration);
     }
 
     private HttpComponentsClientHttpRequestFactory getClientHttpRequestFactory()
@@ -42,10 +41,10 @@ public class OzanExchangeServiceProviderConfiguration extends CachingConfigurerS
                         new HttpComponentsClientHttpRequestFactory();
         //Connect timeout
         clientHttpRequestFactory
-                        .setConnectTimeout(forgienExternalExChangeConfiguration.getConnect());
+                        .setConnectTimeout(ozanRateProviderRestConfiguration.getConnect());
 
         //Read timeout
-        clientHttpRequestFactory.setReadTimeout(forgienExternalExChangeConfiguration.getRead());
+        clientHttpRequestFactory.setReadTimeout(ozanRateProviderRestConfiguration.getRead());
         return clientHttpRequestFactory;
     }
 }

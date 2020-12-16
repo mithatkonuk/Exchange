@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Arrays;
 
 @Configuration
-public class OzanCacheConfiguration
+public class OzanExchangeCacheConfiguration
 {
 
     @Value( "${forgien.service.provider.request.cache.name}" )

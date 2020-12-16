@@ -1,7 +1,7 @@
 package com.ozan.exchange.rateProvider;
 
-import com.ozan.exchange.configuration.ForgienExternalExChangeConfiguration;
-import com.ozan.exchange.dto.Exchange;
+import com.ozan.exchange.configuration.OzanRateProviderRestConfiguration;
+import com.ozan.exchange.dto.ExternalExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -15,11 +15,11 @@ public class RateApiExternalExchangeProvider implements ForgienExchangeProvider
                     LoggerFactory.getLogger(RateApiExternalExchangeProvider.class);
 
     private final RestTemplate restTemplate;
-    private final ForgienExternalExChangeConfiguration configuration;
+    private final OzanRateProviderRestConfiguration configuration;
     private String URI;
 
     public RateApiExternalExchangeProvider( RestTemplate restTemplate,
-                    ForgienExternalExChangeConfiguration configuration )
+                    OzanRateProviderRestConfiguration configuration )
     {
         this.restTemplate = restTemplate;
         this.configuration = configuration;
@@ -27,13 +27,13 @@ public class RateApiExternalExchangeProvider implements ForgienExchangeProvider
     }
 
     @Override
-    public Exchange getExchange( String base, String symbols )
+    public ExternalExchange getExchange( String base, String symbols )
     {
         this.URI = this.URI.replace("{base}", base).replace("{symbols}", symbols);
         logger.info("[external-service (" + configuration.getName() + ")]" + " - Generated url : " +
                         this.URI);
-        Exchange exchange = restTemplate.getForObject(this.URI, Exchange.class);
-        logger.info("[external-service-response] - " + exchange.toString());
-        return exchange;
+        ExternalExchange externalExchange = restTemplate.getForObject(this.URI, ExternalExchange.class);
+        logger.info("[external-service-response] - " + externalExchange.toString());
+        return externalExchange;
     }
 }

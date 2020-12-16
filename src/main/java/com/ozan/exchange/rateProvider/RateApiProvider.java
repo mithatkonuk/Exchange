@@ -1,6 +1,6 @@
 package com.ozan.exchange.rateProvider;
 
-import com.ozan.exchange.dto.Exchange;
+import com.ozan.exchange.dto.ExternalExchange;
 import com.ozan.exchange.exception.ExternalServiceException;
 import com.ozan.exchange.exception.error.ErrorCode;
 import feign.FeignException;
@@ -34,15 +34,15 @@ public class RateApiProvider implements ForgienExchangeProvider
 
     @Cacheable( value = "${forgien.service.provider.request.cache.name}", keyGenerator = "forgienCacheKeyGenerator" )
     @Override
-    public Exchange getExchange( String base, String symbols )
+    public ExternalExchange getExchange( String base, String symbols )
     {
         try
         {
-            Exchange exchange = forgienExchangeProvider.getExchange(base, symbols);
+            ExternalExchange externalExchange = forgienExchangeProvider.getExchange(base, symbols);
 
-            logger.info("[external-service (" + providerName + ")] :  " + exchange.toString());
+            logger.info("[external-service (" + providerName + ")] :  " + externalExchange.toString());
 
-            return exchange;
+            return externalExchange;
         }
         catch( FeignException e )
         {

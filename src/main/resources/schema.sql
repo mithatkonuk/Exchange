@@ -1,4 +1,4 @@
-CREATE TABLE EXCHANGE_CONVERSION
+CREATE TABLE exchange_transaction_table
 (
     transaction_id    UUID NOT NULL,
     base              VARCHAR(5),
@@ -11,4 +11,4 @@ CREATE TABLE EXCHANGE_CONVERSION
     PRIMARY KEY (transaction_id)
 );
 
-CREATE INDEX CONVERSION_DATE ON EXCHANGE_CONVERSION (date_created);
+CREATE INDEX CONVERSION_DATE ON exchange_transaction_table (date_created);

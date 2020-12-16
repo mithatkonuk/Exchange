@@ -56,7 +56,7 @@ public class ExChangeControllerAdvice
     }
 
     @ExceptionHandler( { MethodArgumentNotValidException.class,
-                    MissingServletRequestParameterException.class } )
+                                       MissingServletRequestParameterException.class } )
     @ResponseStatus( value = HttpStatus.BAD_REQUEST )
     public @ResponseBody
     Response handleMethodArgumentNotValidException( final Exception exception,

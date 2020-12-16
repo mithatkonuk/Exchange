@@ -1,6 +1,6 @@
 package com.ozan.exchange.repo;
 
-import com.ozan.exchange.domain.ExchangeConversion;
+import com.ozan.exchange.domain.OzanExChangeTransaction;
 import com.ozan.exchange.util.DateUtils;
 import com.ozan.exchange.util.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -28,22 +28,22 @@ public class ExchangeConversionRepoImpl implements DefaultOzanExchangeRepo
     private EntityManager entityManager;
 
     @Override
-    public List<ExchangeConversion> exchangeHistory( final String transaction,
+    public List<OzanExChangeTransaction> exchangeHistory( final String transaction,
                     final String createdDate, Pageable pageable )
     {
-        List<ExchangeConversion> exchangeConversions =
+        List<OzanExChangeTransaction> ozanExChangeTransactions =
                         getExchangeConversionHistory(transaction, createdDate, pageable);
-        return exchangeConversions;
+        return ozanExChangeTransactions;
     }
 
-    private List<ExchangeConversion> getExchangeConversionHistory( String transaction, String date,
+    private List<OzanExChangeTransaction> getExchangeConversionHistory( String transaction, String date,
                     Pageable pageable )
     {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
-        CriteriaQuery<ExchangeConversion> cq = cb.createQuery(ExchangeConversion.class);
+        CriteriaQuery<OzanExChangeTransaction> cq = cb.createQuery(OzanExChangeTransaction.class);
 
-        Root<ExchangeConversion> exchangeConversionRoot = cq.from(ExchangeConversion.class);
+        Root<OzanExChangeTransaction> exchangeConversionRoot = cq.from(OzanExChangeTransaction.class);
 
         Predicate authorNamePredicate = null;
         Predicate datePredicate = null;
@@ -67,7 +67,7 @@ public class ExchangeConversionRepoImpl implements DefaultOzanExchangeRepo
 
         cq.orderBy(cb.desc(exchangeConversionRoot.get("timestampCreated")));
 
-        TypedQuery<ExchangeConversion> query = entityManager.createQuery(cq);
+        TypedQuery<OzanExChangeTransaction> query = entityManager.createQuery(cq);
 
         if(pageable.getPageSize() != 0)
         {

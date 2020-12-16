@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Exchange
+public class ExternalExchange
 {
     private String base;
     private Map<String, Double> rates;

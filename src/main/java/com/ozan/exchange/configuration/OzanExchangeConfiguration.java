@@ -13,8 +13,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableAspectJAutoProxy
 @ComponentScan( basePackages = "com.ozan.exchange" )
-@Import( { ForgienExternalExChangeConfiguration.class,
-                OzanExchangeServiceProviderConfiguration.class, OzanCacheConfiguration.class,
+@Import( { OzanRateProviderRestConfiguration.class,
+                OzanExchangeRateApiConfiguration.class, OzanExchangeCacheConfiguration.class,
                 SwaggerConfiguration.class } )
 public class OzanExchangeConfiguration
 {
