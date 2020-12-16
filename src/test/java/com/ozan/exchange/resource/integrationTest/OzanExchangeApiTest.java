@@ -1,6 +1,5 @@
 package com.ozan.exchange.resource.integrationTest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ozan.exchange.configuration.OzanExchangeConfiguration;
 import com.ozan.exchange.dto.Conversion;
 import com.ozan.exchange.dto.OzanExchange;
@@ -9,6 +8,7 @@ import com.ozan.exchange.util.ObjectUtils;
 import com.ozan.exchange.web.util.Response;
 import com.ozan.exchange.web.util.ResponseError;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +26,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,18 +42,18 @@ public class OzanExchangeApiTest
 {
 
     private static final Logger logger = LoggerFactory.getLogger(OzanExchangeApiTest.class);
+    @Rule
+    public JUnitRestDocumentation restDocumentation =
+                    new JUnitRestDocumentation("target/generated-snippets");
     @Autowired
     private WebApplicationContext wac;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
     private MockMvc mockMvc;
 
     @Before
     public void setup()
     {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
+                        .apply(documentationConfiguration(this.restDocumentation)).build();
     }
 
     @Test
@@ -60,7 +67,22 @@ public class OzanExchangeApiTest
                         MockMvcRequestBuilders.get("/exchange-service/exchange")
                                         .param("currency_pair", currency_pair)
                                         .accept("application/json;charset=UTF-8"))
-                        .andExpect(status().isOk()).andReturn();
+                        .andExpect(status().isOk()).andDo(document("home", requestParameters(
+                                        parameterWithName("currency_pair")
+                                                        .description("The name to retrieve")),
+                                        responseFields(fieldWithPath("data.base")
+                                                                        .description("Source Currency"),
+                                                        fieldWithPath("data.symbol")
+                                                                        .description("Target Currency"),
+                                                        fieldWithPath("data.rate")
+                                                                        .description("Represent rate between currencies"),
+                                                        fieldWithPath("data.date")
+                                                                        .description("Represent of Date Transaction event occured"),
+                                                        fieldWithPath("error.errorCode")
+                                                                        .description("Represent of Error Code"),
+                                                        fieldWithPath("error.message")
+                                                                        .description("Represent of Custom Error Message"))))
+                        .andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
 
