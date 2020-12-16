@@ -10,8 +10,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @JsonInclude( JsonInclude.Include.NON_NULL )
 public class OzanExchange
 {

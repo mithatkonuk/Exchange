@@ -32,7 +32,8 @@ public class RateApiProvider implements ForgienExchangeProvider
         this.forgienExchangeProvider = forgienExchangeProvider;
     }
 
-    @Cacheable( value = "${forgien.service.provider.request.cache.name}", keyGenerator = "forgienCacheKeyGenerator" )
+    @Cacheable( value = "${forgien.service.provider.request.cache.name}",
+                keyGenerator = "forgienCacheKeyGenerator" )
     @Override
     public ExternalExchange getExchange( String base, String symbols )
     {
@@ -40,7 +41,8 @@ public class RateApiProvider implements ForgienExchangeProvider
         {
             ExternalExchange externalExchange = forgienExchangeProvider.getExchange(base, symbols);
 
-            logger.info("[external-service (" + providerName + ")] :  " + externalExchange.toString());
+            logger.info("[external-service (" + providerName + ")] :  " +
+                            externalExchange.toString());
 
             return externalExchange;
         }
@@ -48,12 +50,12 @@ public class RateApiProvider implements ForgienExchangeProvider
         {
             throw new ExternalServiceException(
                             ErrorCode.EXTERNAL_SERVICE_PROVIDER.EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND,
-                            "External service is not supporting given exchange");
+                            "Currently External service is not supporting given exchange");
         }
     }
 
-    @CacheEvict( allEntries = true, cacheNames = {
-                    "${forgien.service.provider.request.cache.name}" } )
+    @CacheEvict( allEntries = true,
+                 cacheNames = { "${forgien.service.provider.request.cache.name}" } )
     @Scheduled( fixedDelayString = "${forgien.service.provider.request.cache.ttl}" )
     public void cacheEvict()
     {

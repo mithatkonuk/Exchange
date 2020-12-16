@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class ResponseError
 {
     public static final ResponseError EMPTY_RESPONSE_ERROR =
-                    ResponseError.builder().message("Successs").build();
+                    ResponseError.builder().errorCode(0).message("Successs").build();
 
     @ApiModelProperty( notes = "Represent of Error Code" )
     private int errorCode;

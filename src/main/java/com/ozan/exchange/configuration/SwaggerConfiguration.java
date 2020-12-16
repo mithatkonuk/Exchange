@@ -6,6 +6,9 @@ import io.swagger.annotations.License;
 import io.swagger.annotations.SwaggerDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -29,9 +32,9 @@ import java.util.function.Predicate;
                                                                              url = "https://www.linkedin.com/in/mithat-konuk-0652831ab/" ),
                                   license = @License( name = "Apache 2.0",
                                                       url = "http://www.apache.org/licenses/LICENSE-2.0" ) ),
-                    consumes = { "application/json"},
+                    consumes = { "application/json" },
                     produces = { "application/json" },
-                    schemes = { SwaggerDefinition.Scheme.HTTP},
+                    schemes = { SwaggerDefinition.Scheme.HTTP },
                     externalDocs = @ExternalDocs( value = "Contact me",
                                                   url = "https://www.linkedin.com/in/mithat-konuk-0652831ab/" ) )
 
@@ -57,4 +60,5 @@ public class SwaggerConfiguration
                         .apis(RequestHandlerSelectors.any()).paths(PathSelectors.any())
                         .paths(Predicate.not(PathSelectors.regex("/error.*"))).build();
     }
+
 }

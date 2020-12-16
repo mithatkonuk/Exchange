@@ -34,13 +34,12 @@ public class OzanExchangeApi
 
     @OzanExecutionTimeLogged
     @GetMapping( value = "/exchange" )
-    public Response exchange(
-                    @ApiParam( "Currency pair ,ex [EUR,TRY]" ) @NotNull @NotBlank @NotEmpty
-                    @RequestParam( "currencies" ) String currencies )
+    public Response exchange( @ApiParam( "Currency pair , [source: EUR,target:TRY]" )
+    @NotNull @NotBlank @NotEmpty @RequestParam( "currency_pair" ) String currencies )
     {
         String[] currArr = StringUtils.split(currencies, ",");
 
-        if(StringUtils.isNotEmpty(currArr))
+        if(StringUtils.isNotEmpty(currArr) && currArr.length == StringUtils.PAIR_LENGHT)
         {
             ExternalExchange externalExchange =
                             this.rateApiProvider.getExchange(currArr[0], currArr[1]);
@@ -59,7 +58,9 @@ public class OzanExchangeApi
     }
 
     @OzanExecutionTimeLogged
-    @PostMapping( value = "/conversion" )
+    @PostMapping( value = "/exchange/conversion",
+                  produces = "application/json",
+                  consumes = "application/json" )
     public Response exchange(
                     @ApiParam( "Represent to calculate amount between currencies" ) @RequestBody
                     @NotNull @Valid Conversion conversion )
@@ -79,7 +80,7 @@ public class OzanExchangeApi
     }
 
     @OzanExecutionTimeLogged
-    @PutMapping( value = "/conversion" )
+    @PutMapping( value = "/exchange/conversion" )
     public Response exchange( @ApiParam( "Represent to source currency" ) @RequestParam( "base" )
     @NotNull @NotBlank String base,
                     @ApiParam( "Represent to target currency" ) @RequestParam( "symbol" )

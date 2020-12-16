@@ -29,7 +29,7 @@ public class ExChangeControllerAdvice
     /// ---- Handle methods begin
 
     @ExceptionHandler( ConstraintViolationException.class )
-    @ResponseStatus( value = HttpStatus.INTERNAL_SERVER_ERROR )
+    @ResponseStatus( value = HttpStatus.BAD_REQUEST )
     public @ResponseBody
     Response handleConstraintViolationException( final ConstraintViolationException exception,
                     final HttpServletRequest request )
@@ -38,7 +38,7 @@ public class ExChangeControllerAdvice
     }
 
     @ExceptionHandler( ExternalServiceException.class )
-    @ResponseStatus( value = HttpStatus.BAD_REQUEST )
+    @ResponseStatus( value = HttpStatus.OK )
     public @ResponseBody
     Response handleExternalServiceException( final ExternalServiceException exception,
                     final HttpServletRequest request )
@@ -46,8 +46,16 @@ public class ExChangeControllerAdvice
         return buildMessage(exception, exception.getErrorCode());
     }
 
+    /**
+     * HttpStatus not found make response body empty , no need to set build message
+     * but we just showing here we can customize
+     *
+     * @param exception
+     * @param request
+     * @return
+     */
     @ExceptionHandler( FeignException.class )
-    @ResponseStatus( value = HttpStatus.BAD_REQUEST )
+    @ResponseStatus( value = HttpStatus.INTERNAL_SERVER_ERROR )
     public @ResponseBody
     Response handleFeignException( final FeignException exception,
                     final HttpServletRequest request )
@@ -75,9 +83,10 @@ public class ExChangeControllerAdvice
     }
 
     @ExceptionHandler( ExchangeHistoryNotFoundException.class )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @ResponseStatus( value = HttpStatus.OK )
     public @ResponseBody
-    Response handleExchangeServiceParamException( final ExchangeHistoryNotFoundException exception,
+    Response handleExchangeHistoryNotFoundException(
+                    final ExchangeHistoryNotFoundException exception,
                     final HttpServletRequest request )
     {
         return Response.EMPTY_RESPONSE;

@@ -1,12 +1,18 @@
 package com.ozan.exchange.web.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
+@JsonInclude( JsonInclude.Include.NON_NULL )
 @ApiModel( description = "Definition of General Response Ozan Exchange" )
 public class Response
 {
