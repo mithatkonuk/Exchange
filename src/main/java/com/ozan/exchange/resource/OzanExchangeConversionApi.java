@@ -4,6 +4,7 @@ import com.ozan.exchange.domain.OzanExChangeTransaction;
 import com.ozan.exchange.dto.OzanPaging;
 import com.ozan.exchange.service.ExchangeConversionService;
 import com.ozan.exchange.web.util.Response;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,8 @@ public class OzanExchangeConversionApi
     private final ExchangeConversionService exchangeConversionService;
 
     @GetMapping( "/conversion/transaction" )
-    public Response conversionByTransaction( @RequestParam( "id" ) String transaction )
+    public Response conversionByTransaction( @RequestParam( value = "id",
+                                                            defaultValue = "" ) String transaction )
     {
         OzanExChangeTransaction ozanExChangeTransaction =
                         exchangeConversionService.exchangeHistory(transaction);
@@ -41,11 +43,12 @@ public class OzanExchangeConversionApi
     }
 
     @GetMapping( "/conversion/date" )
-    public Response conversionByDate( @RequestParam( value = "created",
-                                                     defaultValue = "" ) String date,
-                    @RequestParam( value = "offset",
-                                   defaultValue = DEFAULT_OFFSET_SIZE )
-                    @PositiveOrZero( message = "offset should be positive or zero" ) Integer offset,
+    public Response conversionByDate(
+                    @ApiParam( "Represent to date ,format [YYYY-MM-DD] default value empty" )
+                    @RequestParam( value = "created",
+                                   defaultValue = "" ) String date, @RequestParam( value = "offset",
+                                                                                   defaultValue = DEFAULT_OFFSET_SIZE )
+    @PositiveOrZero( message = "offset should be positive or zero" ) Integer offset,
                     @RequestParam( value = "pageSize",
                                    defaultValue = DEFAULT_PAGE_SIZE )
                     @PositiveOrZero( message = "page size  should be positive or zero" ) Integer pageSize )
@@ -66,8 +69,10 @@ public class OzanExchangeConversionApi
 
     @GetMapping( "/conversion" )
     public Response conversion( @RequestParam( value = "created",
-                                               defaultValue = "" ) String date,
+                                               defaultValue = "" )
+    @ApiParam( "Represent to date , format [YYYY-MM-DD] , default value empty" ) String date,
 
+                    @ApiParam( "Represent to transaction , default value empty" )
                     @RequestParam( value = "transaction",
                                    defaultValue = "" ) String transaction,
 

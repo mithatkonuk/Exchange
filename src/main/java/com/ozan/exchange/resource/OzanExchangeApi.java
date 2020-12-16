@@ -12,8 +12,7 @@ import com.ozan.exchange.util.DateUtils;
 import com.ozan.exchange.util.StringUtils;
 import com.ozan.exchange.web.util.Response;
 import com.ozan.exchange.web.util.ResponseError;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +35,8 @@ public class OzanExchangeApi
     @OzanExecutionTimeLogged
     @GetMapping( value = "/exchange" )
     public Response exchange(
-                    @NotNull @NotBlank @NotEmpty @RequestParam( "currencies" ) String currencies )
+                    @ApiParam( "Currency pair ,ex [EUR,TRY]" ) @NotNull @NotBlank @NotEmpty
+                    @RequestParam( "currencies" ) String currencies )
     {
         String[] currArr = StringUtils.split(currencies, ",");
 
@@ -60,7 +60,9 @@ public class OzanExchangeApi
 
     @OzanExecutionTimeLogged
     @PostMapping( value = "/conversion" )
-    public Response exchange( @RequestBody @NotNull @Valid Conversion conversion )
+    public Response exchange(
+                    @ApiParam( "Represent to calculate amount between currencies" ) @RequestBody
+                    @NotNull @Valid Conversion conversion )
     {
 
         // request from external service
@@ -78,10 +80,13 @@ public class OzanExchangeApi
 
     @OzanExecutionTimeLogged
     @PutMapping( value = "/conversion" )
-    public Response exchange( @RequestParam( "base" ) @NotNull @NotBlank String base,
-                    @RequestParam( "symbol" ) @NotNull @NotBlank String symbol,
-                    @RequestParam( "amount" )
+    public Response exchange( @ApiParam( "Represent to source currency" ) @RequestParam( "base" )
+    @NotNull @NotBlank String base,
+                    @ApiParam( "Represent to target currency" ) @RequestParam( "symbol" )
+                    @NotNull @NotBlank String symbol,
+                    @ApiParam( "Represent to amount of base currency" ) @RequestParam( "amount" )
                     @PositiveOrZero( message = "Amount should be positive or zero" ) Double amount,
+                    @ApiParam( "detail enable/disable for response" )
                     @RequestParam( name = "detail",
                                    defaultValue = "false" ) Boolean detail )
     {
