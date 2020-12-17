@@ -1,16 +1,14 @@
 package com.ozan.exchange.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Builder
 @Getter
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OzanPaging implements Serializable
 {
     private Object data;

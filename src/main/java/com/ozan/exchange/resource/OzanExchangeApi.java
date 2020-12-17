@@ -6,10 +6,10 @@ import com.ozan.exchange.dto.ExternalExchange;
 import com.ozan.exchange.dto.OzanExchange;
 import com.ozan.exchange.exception.ExchangeServiceParamException;
 import com.ozan.exchange.exception.error.ErrorCode;
-import com.ozan.exchange.rateProvider.RateApiProvider;
+import com.ozan.exchange.rateExchangeProvider.RateExchangeApiProvider;
 import com.ozan.exchange.service.ExchangeConversionService;
-import com.ozan.exchange.util.DateUtils;
-import com.ozan.exchange.util.StringUtils;
+import com.ozan.exchange.util.OzanDateUtils;
+import com.ozan.exchange.util.OzanStringUtils;
 import com.ozan.exchange.web.util.Response;
 import com.ozan.exchange.web.util.ResponseError;
 import io.swagger.annotations.ApiParam;
@@ -24,12 +24,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 @RestController
-@RequestMapping( "exchange-service" )
+@RequestMapping( "exchangeApi" )
 @Validated
 @AllArgsConstructor
 public class OzanExchangeApi
 {
-    private final RateApiProvider rateApiProvider;
+    private final RateExchangeApiProvider rateExchangeApiProvider;
     private final ExchangeConversionService exchangeConversionService;
 
     @OzanExecutionTimeLogged
@@ -37,15 +37,15 @@ public class OzanExchangeApi
     public Response exchange( @ApiParam( "Currency pair , [source: EUR,target:TRY]" )
     @NotNull @NotBlank @NotEmpty @RequestParam( "currency_pair" ) String currencies )
     {
-        String[] currArr = StringUtils.split(currencies, ",");
+        String[] currArr = OzanStringUtils.split(currencies, ",");
 
-        if(StringUtils.isNotEmpty(currArr) && currArr.length == StringUtils.PAIR_LENGHT)
+        if(OzanStringUtils.isNotEmpty(currArr) && currArr.length == OzanStringUtils.PAIR_LENGHT)
         {
             ExternalExchange externalExchange =
-                            this.rateApiProvider.getExchange(currArr[0], currArr[1]);
+                            this.rateExchangeApiProvider.getExchange(currArr[0], currArr[1]);
             return Response.builder().data(OzanExchange.builder().base(externalExchange.getBase())
                             .symbol(currArr[1]).rate(externalExchange.getRates().get(currArr[1]))
-                            .date(DateUtils.nowAsDate()).build())
+                            .date(OzanDateUtils.nowAsDate()).build())
                             .error(ResponseError.EMPTY_RESPONSE_ERROR).build();
         }
         else
@@ -67,7 +67,7 @@ public class OzanExchangeApi
     {
 
         // request from external service
-        ExternalExchange externalExchange = this.rateApiProvider
+        ExternalExchange externalExchange = this.rateExchangeApiProvider
                         .getExchange(conversion.getBase(), conversion.getSymbol());
 
         // return calculate amount with rate
@@ -93,7 +93,7 @@ public class OzanExchangeApi
     {
 
         // request from external service
-        ExternalExchange externalExchange = this.rateApiProvider.getExchange(base, symbol);
+        ExternalExchange externalExchange = this.rateExchangeApiProvider.getExchange(base, symbol);
 
         // return calculate amount with rate
         return Response.builder().data(exchangeConversionService

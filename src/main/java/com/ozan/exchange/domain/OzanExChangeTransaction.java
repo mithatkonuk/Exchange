@@ -31,7 +31,7 @@ public class OzanExChangeTransaction extends AbstractBaseEntity
     private Double amount;
 
     @ApiModelProperty( notes = "Rate between source and target currency" )
-    private Double range;
+    private Double rate;
 
     @ApiModelProperty( notes = "Conversion from source to target currency via rate and amount" )
     private Double conversion;

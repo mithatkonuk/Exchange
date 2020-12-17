@@ -8,7 +8,7 @@ public class ExchangeHistoryNotFoundException extends RuntimeException
 {
     private ErrorCode errorCode;
 
-    ExchangeHistoryNotFoundException( ErrorCode errorCode, String message )
+    public ExchangeHistoryNotFoundException( ErrorCode errorCode, String message )
     {
         super(message);
         this.errorCode = errorCode;

@@ -3,10 +3,11 @@ package com.ozan.exchange.util;
 import com.ozan.exchange.exception.ExchangeServiceParamException;
 import com.ozan.exchange.exception.error.ErrorCode;
 
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.UUID;
 
-public class AssertUtils
+public class OzanAssertUtils
 {
 
     public static void assertTransaction( final String uuid )
@@ -18,7 +19,7 @@ public class AssertUtils
         catch( IllegalArgumentException e )
         {
             throw new ExchangeServiceParamException(
-                            ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_VALUE_TOO_LONG);
+                            ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE);
         }
     }
 
@@ -42,13 +43,13 @@ public class AssertUtils
 
     public static void assertIsBlank( String word )
     {
-        if(StringUtils.isEmpty(word))
+        if(OzanStringUtils.isEmpty(word))
         {
             throw new ExchangeServiceParamException(
                             ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NULL);
         }
 
-        if(StringUtils.isBlank(word))
+        if(OzanStringUtils.isBlank(word))
         {
             throw new ExchangeServiceParamException(
                             ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE);
@@ -57,10 +58,25 @@ public class AssertUtils
 
     public static void assertCollectionIsEmpty( Collection collection, ErrorCode errorCode )
     {
-        if(CollectionUtils.isEmpty(collection))
+        if(OzanCollectionUtils.isEmpty(collection))
         {
             throw new ExchangeServiceParamException(errorCode);
         }
+    }
+
+    public static void assertDateFormat( String date )
+    {
+        try
+        {
+            OzanDateUtils.parse(date, OzanDateUtils.YYYY_MM_DD, false);
+
+        }
+        catch( IllegalArgumentException | ParseException e )
+        {
+            throw new ExchangeServiceParamException(
+                            ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_FORMAT_PROBLEM);
+        }
+
     }
 
 }

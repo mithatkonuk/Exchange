@@ -1,4 +1,4 @@
-package com.ozan.exchange.rateProvider;
+package com.ozan.exchange.rateExchangeProvider;
 
 import com.ozan.exchange.dto.ExternalExchange;
 import org.springframework.web.bind.annotation.RequestMapping;

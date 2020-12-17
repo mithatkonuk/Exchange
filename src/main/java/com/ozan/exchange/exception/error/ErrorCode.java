@@ -2,13 +2,16 @@ package com.ozan.exchange.exception.error;
 
 import lombok.Getter;
 
+import java.io.Serializable;
+
 /**
  * This class provide each different module errorCodes
  */
 @Getter
-public class ErrorCode
+public class ErrorCode implements Serializable
 {
 
+    public static final ErrorCode NOT_ERROR = new ErrorCode(0, null);
     private int errorCode;
     private String description;
 
@@ -16,6 +19,11 @@ public class ErrorCode
     {
         this.errorCode = errorCode;
         this.description = description;
+    }
+
+    public ErrorCode()
+    {
+
     }
 
     public static class EXTERNAL_SERVICE_PROVIDER
@@ -29,24 +37,22 @@ public class ErrorCode
 
     public static class EXCHANGE_SERVICE
     {
-        public static final ErrorCode ILLEGAL_ARGUMENT_VALUE_TOO_LONG =
-                        new ErrorCode(3, "Given Parameter value too long");
 
         public static final ErrorCode ILLEGAL_ARGUMENT_NULL =
-                        new ErrorCode(4, "Given Parameter must not be null");
+                        new ErrorCode(3, "Given Parameter must not be null");
 
         public static final ErrorCode ILLEGAL_ARGUMENT_NOT_ACCEPTABLE =
-                        new ErrorCode(5, "Given Parameter is not acceptable");
+                        new ErrorCode(4, "Given Parameter is not acceptable");
 
-        public static final ErrorCode ILLEGAL_ARGUMENT_FORMAT_PROBLEM =
-                        new ErrorCode(6, "Given Parameter format problem exist");
+        public static final ErrorCode ILLEGAL_ARGUMENT_FORMAT_PROBLEM = new ErrorCode(5,
+                        "Given Parameter format problem exist,date format [YYYY-MM-DD]");
 
-        public static final ErrorCode NOT_FOUND = new ErrorCode(7, "Requested data is not found");
+        public static final ErrorCode NOT_FOUND = new ErrorCode(6, "Requested data is not found");
     }
 
     public static class GENERIC
     {
-        public static final ErrorCode GENERIC_ERROR = new ErrorCode(8, "Generic Error occured");
+        public static final ErrorCode GENERIC_ERROR = new ErrorCode(7, "Generic Error occured");
 
     }
 

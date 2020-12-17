@@ -1,4 +1,4 @@
-package com.ozan.exchange.rateProvider;
+package com.ozan.exchange.rateExchangeProvider;
 
 import com.ozan.exchange.dto.ExternalExchange;
 import com.ozan.exchange.exception.ExternalServiceException;
@@ -15,10 +15,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component( "rateApiProvider" )
-public class RateApiProvider implements ForgienExchangeProvider
+public class RateExchangeApiProvider implements ForgienExchangeProvider
 {
 
-    private static final Logger logger = LoggerFactory.getLogger(RateApiProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(RateExchangeApiProvider.class);
 
     private ForgienExchangeProvider forgienExchangeProvider;
 
@@ -26,7 +26,7 @@ public class RateApiProvider implements ForgienExchangeProvider
     private String providerName;
 
     @Autowired
-    public RateApiProvider( @Qualifier( "${forgien_exchange_providers.feign.name}" )
+    public RateExchangeApiProvider( @Qualifier( "${forgien_exchange_providers.feign.name}" )
                     ForgienExchangeProvider forgienExchangeProvider )
     {
         this.forgienExchangeProvider = forgienExchangeProvider;

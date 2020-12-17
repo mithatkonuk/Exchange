@@ -1,8 +1,8 @@
 package com.ozan.exchange.repo;
 
 import com.ozan.exchange.domain.OzanExChangeTransaction;
-import com.ozan.exchange.util.DateUtils;
-import com.ozan.exchange.util.StringUtils;
+import com.ozan.exchange.util.OzanDateUtils;
+import com.ozan.exchange.util.OzanStringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -49,17 +49,17 @@ public class ExchangeConversionRepoImpl implements DefaultOzanExchangeRepo
         Predicate datePredicate = null;
 
         List<Predicate> predicates = new ArrayList<>();
-        if(null != transaction && StringUtils.isNotBlank(transaction))
+        if(null != transaction && OzanStringUtils.isNotBlank(transaction))
         {
             authorNamePredicate = cb.equal(exchangeConversionRoot.get("transaction"),
                             UUID.fromString(transaction));
             predicates.add(authorNamePredicate);
         }
 
-        if(null != date && StringUtils.isNotBlank(date))
+        if(null != date && OzanStringUtils.isNotBlank(date))
         {
             datePredicate = cb.equal(exchangeConversionRoot.get("dateCreated"),
-                            DateUtils.fromString(date, DateUtils.YYYY_MM_DD));
+                            OzanDateUtils.fromString(date, OzanDateUtils.YYYY_MM_DD));
             predicates.add(datePredicate);
         }
 

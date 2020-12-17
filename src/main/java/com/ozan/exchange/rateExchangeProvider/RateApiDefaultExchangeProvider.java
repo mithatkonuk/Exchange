@@ -1,4 +1,4 @@
-package com.ozan.exchange.rateProvider;
+package com.ozan.exchange.rateExchangeProvider;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.openfeign.FeignClient;

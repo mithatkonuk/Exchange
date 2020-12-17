@@ -3,12 +3,11 @@ package com.ozan.exchange.service;
 import com.ozan.exchange.domain.OzanExChangeTransaction;
 import com.ozan.exchange.dto.OzanExchange;
 import com.ozan.exchange.exception.ExchangeHistoryNotFoundException;
-import com.ozan.exchange.exception.ExchangeServiceParamException;
 import com.ozan.exchange.exception.error.ErrorCode;
 import com.ozan.exchange.repo.ExchangeConversionRepo;
-import com.ozan.exchange.util.AssertUtils;
-import com.ozan.exchange.util.CollectionUtils;
-import com.ozan.exchange.util.DateUtils;
+import com.ozan.exchange.util.OzanAssertUtils;
+import com.ozan.exchange.util.OzanCollectionUtils;
+import com.ozan.exchange.util.OzanDateUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -32,13 +31,13 @@ public class ExchangeConversionServiceImpl implements ExchangeConversionService
     @Override
     public OzanExChangeTransaction exchangeHistory( final String transaction )
     {
-        AssertUtils.assertIsBlank(transaction);
-        AssertUtils.assertTransaction(transaction);
+        OzanAssertUtils.assertIsBlank(transaction);
+        OzanAssertUtils.assertTransaction(transaction);
 
         Optional<OzanExChangeTransaction> exchangeConversion =
                         exchangeConversionRepo.findByTransaction(UUID.fromString(transaction));
 
-        return exchangeConversion.orElseThrow(() -> new ExchangeServiceParamException(
+        return exchangeConversion.orElseThrow(() -> new ExchangeHistoryNotFoundException(
                         ErrorCode.EXCHANGE_SERVICE.NOT_FOUND));
     }
 
@@ -47,13 +46,15 @@ public class ExchangeConversionServiceImpl implements ExchangeConversionService
                     int pageSize )
     {
 
-        AssertUtils.assertIsBlank(dateCreated);
+        OzanAssertUtils.assertIsBlank(dateCreated);
+        OzanAssertUtils.assertDateFormat(dateCreated);
 
         Page<OzanExChangeTransaction> exchangeConversions = exchangeConversionRepo
-                        .findByDateCreated(DateUtils.fromString(dateCreated, DateUtils.YYYY_MM_DD),
+                        .findByDateCreated(OzanDateUtils.fromString(dateCreated,
+                                        OzanDateUtils.YYYY_MM_DD),
                                         PageRequest.of(offset, pageSize));
 
-        if(CollectionUtils.isEmpty(exchangeConversions.getContent()))
+        if(OzanCollectionUtils.isEmpty(exchangeConversions.getContent()))
         {
             throw new ExchangeHistoryNotFoundException(ErrorCode.EXCHANGE_SERVICE.NOT_FOUND);
         }
@@ -62,34 +63,37 @@ public class ExchangeConversionServiceImpl implements ExchangeConversionService
     }
 
     @Override
-    public Page<OzanExChangeTransaction> exchangeHistoryByTransactionAndCreatedDate( String transaction,
-                    String createdDate, int offset, int pageSize )
+    public Page<OzanExChangeTransaction> exchangeHistoryByTransactionAndCreatedDate(
+                    String transaction, String createdDate, int offset, int pageSize )
     {
-        AssertUtils.assertNotNullPair(transaction, createdDate);
+        OzanAssertUtils.assertNotNullPair(transaction, createdDate);
+        OzanAssertUtils.assertDateFormat(createdDate);
+        OzanAssertUtils.assertTransaction(transaction);
 
         Pageable pageable = PageRequest.of(offset, pageSize);
 
         List<OzanExChangeTransaction> ozanExChangeTransactionList =
                         exchangeConversionRepo.exchangeHistory(transaction, createdDate, pageable);
 
-        AssertUtils.assertCollectionIsEmpty(ozanExChangeTransactionList,
+        OzanAssertUtils.assertCollectionIsEmpty(ozanExChangeTransactionList,
                         ErrorCode.EXCHANGE_SERVICE.NOT_FOUND);
 
-        return new PageImpl<>(ozanExChangeTransactionList, pageable, exchangeConversionRepo.count());
+        return new PageImpl<>(ozanExChangeTransactionList, pageable,
+                        exchangeConversionRepo.count());
     }
 
     @Transactional( rollbackFor = DataAccessException.class )
     @Override
-    public OzanExchange saveExchangeHistory( String base, String symbol, Double amount,
-                    Double rate, boolean detail )
+    public OzanExchange saveExchangeHistory( String base, String symbol, Double amount, Double rate,
+                    boolean detail )
     {
         rate = (null == rate) ? 0d : rate;
 
         OzanExChangeTransaction ozanExChangeTransaction =
                         OzanExChangeTransaction.builder().base(base).symbol(symbol).amount(amount)
-                                        .range(rate).conversion(rate * amount)
-                                        .dateCreated(DateUtils.nowAsDate())
-                                        .timestampCreated(DateUtils.nowAsDate()).build();
+                                        .rate(rate).conversion(rate * amount)
+                                        .dateCreated(OzanDateUtils.nowAsDate())
+                                        .timestampCreated(OzanDateUtils.nowAsDate()).build();
 
         OzanExChangeTransaction saved = exchangeConversionRepo.save(ozanExChangeTransaction);
 
@@ -97,7 +101,7 @@ public class ExchangeConversionServiceImpl implements ExchangeConversionService
         {
 
             return OzanExchange.builder().amount(amount).base(base).symbol(symbol)
-                            .conversion(rate * amount).date(DateUtils.nowAsDate()).rate(rate)
+                            .conversion(rate * amount).date(OzanDateUtils.nowAsDate()).rate(rate)
                             .transaction(saved.getTransaction().toString()).build();
 
         }

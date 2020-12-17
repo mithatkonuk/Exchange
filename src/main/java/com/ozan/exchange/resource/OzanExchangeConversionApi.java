@@ -3,7 +3,9 @@ package com.ozan.exchange.resource;
 import com.ozan.exchange.domain.OzanExChangeTransaction;
 import com.ozan.exchange.dto.OzanPaging;
 import com.ozan.exchange.service.ExchangeConversionService;
+import com.ozan.exchange.util.OzanObjectUtils;
 import com.ozan.exchange.web.util.Response;
+import com.ozan.exchange.web.util.ResponseError;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.PositiveOrZero;
 
 @RestController
-@RequestMapping( "/history" )
+@RequestMapping( "/conversionApi" )
 @AllArgsConstructor
 @Validated
 public class OzanExchangeConversionApi
@@ -31,7 +33,7 @@ public class OzanExchangeConversionApi
     private final ExchangeConversionService exchangeConversionService;
 
     @GetMapping( "/conversion/transaction" )
-    public Response conversionByTransaction( @RequestParam( value = "id",
+    public Response conversionByTransaction( @RequestParam( value = "transaction_id",
                                                             defaultValue = "" ) String transaction )
     {
         OzanExChangeTransaction ozanExChangeTransaction =
@@ -39,7 +41,8 @@ public class OzanExchangeConversionApi
 
         logger.info(ozanExChangeTransaction.toString());
 
-        return Response.builder().data(ozanExChangeTransaction).build();
+        return Response.builder().data(OzanObjectUtils.mapper(ozanExChangeTransaction))
+                        .error(ResponseError.EMPTY_RESPONSE_ERROR).build();
     }
 
     @GetMapping( "/conversion/date" )
@@ -56,15 +59,12 @@ public class OzanExchangeConversionApi
         Page<OzanExChangeTransaction> exchangeConversions =
                         exchangeConversionService.exchangeHistory(date, offset, pageSize);
 
-        OzanPaging ozanPaging = OzanPaging.of(exchangeConversions.getContent(),
-                        exchangeConversions.getTotalElements(),
-                        exchangeConversions.getPageable().getPageNumber(),
-                        exchangeConversions.getPageable().getPageSize(),
-                        exchangeConversions.getTotalPages());
+        OzanPaging ozanPaging = OzanObjectUtils.mapper(exchangeConversions);
 
         logger.info(ozanPaging.toString());
 
-        return Response.builder().data(ozanPaging).build();
+        return Response.builder().data(ozanPaging).error(ResponseError.EMPTY_RESPONSE_ERROR)
+                        .build();
     }
 
     @GetMapping( "/conversion" )
@@ -73,7 +73,7 @@ public class OzanExchangeConversionApi
     @ApiParam( "Represent to date , format [YYYY-MM-DD] , default value empty" ) String date,
 
                     @ApiParam( "Represent to transaction , default value empty" )
-                    @RequestParam( value = "transaction",
+                    @RequestParam( value = "transaction_id",
                                    defaultValue = "" ) String transaction,
 
                     @RequestParam( value = "offset",
@@ -89,14 +89,11 @@ public class OzanExchangeConversionApi
                         .exchangeHistoryByTransactionAndCreatedDate(transaction, date, offset,
                                         pageSize);
 
-        OzanPaging ozanPaging = OzanPaging.of(exchangeConversions.getContent(),
-                        exchangeConversions.getTotalElements(),
-                        exchangeConversions.getPageable().getPageNumber(),
-                        exchangeConversions.getPageable().getPageSize(),
-                        exchangeConversions.getTotalPages());
+        OzanPaging ozanPaging = OzanObjectUtils.mapper(exchangeConversions);
 
         logger.info(ozanPaging.toString());
 
-        return Response.builder().data(ozanPaging).build();
+        return Response.builder().data(ozanPaging).error(ResponseError.EMPTY_RESPONSE_ERROR)
+                        .build();
     }
 }

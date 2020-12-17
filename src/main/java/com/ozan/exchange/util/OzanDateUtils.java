@@ -14,10 +14,11 @@ import java.util.Date;
  * <p>
  * private DateProvider dateProvider;
  */
-public class DateUtils
+public class OzanDateUtils
 {
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
     // we can customize this with another Date formatter or create custom implementation
-    public static final DateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateFormat YYYY_MM_DD = new SimpleDateFormat(DATE_PATTERN);
 
     public static Date nowAsDate()
     {
@@ -33,13 +34,20 @@ public class DateUtils
     {
         try
         {
-            return DateUtils.stripTime((pattern.parse(date)));
+            return OzanDateUtils.stripTime((pattern.parse(date)));
         }
         catch( ParseException e )
         {
             throw new ExchangeServiceParamException(
                             ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_FORMAT_PROBLEM);
         }
+    }
+
+    public static Date parse( String date, DateFormat format, boolean lenient )
+                    throws ParseException
+    {
+        format.setLenient(lenient);
+        return format.parse(date);
     }
 
     public static Date stripTime( Date date )

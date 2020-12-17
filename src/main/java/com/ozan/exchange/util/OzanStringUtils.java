@@ -2,7 +2,7 @@ package com.ozan.exchange.util;
 
 import java.util.UUID;
 
-public class StringUtils
+public class OzanStringUtils
 {
     public static final int PAIR_LENGHT = 2;
     private static final String WHITE_SPACE_REGEX = ".*\\w.*";

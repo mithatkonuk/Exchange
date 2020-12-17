@@ -89,20 +89,14 @@ public class ExChangeControllerAdvice
                     final ExchangeHistoryNotFoundException exception,
                     final HttpServletRequest request )
     {
-        return Response.EMPTY_RESPONSE;
+        return buildMessage(exception, exception.getErrorCode());
     }
 
     // --- Handle Method end
 
     private Response buildMessage( Exception exception, ErrorCode errorCode )
     {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("[message]:").append(exception.getMessage()).append(" ").append("-")
-                        .append(" ").append("[error-code]:").append(errorCode.getErrorCode());
-
-        ResponseError responseError = ResponseError.builder().
-                        errorCode(errorCode.getErrorCode()).message(stringBuilder.toString())
-                        .build();
+        ResponseError responseError = ResponseError.builder().errorCode(errorCode).build();
         return Response.builder().error(responseError).build();
     }
 }

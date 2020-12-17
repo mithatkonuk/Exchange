@@ -1,8 +1,8 @@
 package com.ozan.exchange.web.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ozan.exchange.exception.error.ErrorCode;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,11 +17,7 @@ import lombok.NoArgsConstructor;
 public class ResponseError
 {
     public static final ResponseError EMPTY_RESPONSE_ERROR =
-                    ResponseError.builder().errorCode(0).message("Successs").build();
+                    ResponseError.builder().errorCode(ErrorCode.NOT_ERROR).build();
 
-    @ApiModelProperty( notes = "Represent of Error Code" )
-    private int errorCode;
-
-    @ApiModelProperty( notes = "Represent of custom message about errorcode" )
-    private String message;
+    private ErrorCode errorCode;
 }
