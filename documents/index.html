@@ -469,6 +469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_service_providers">Service Providers</a></li>
 <li><a href="#_cache">Cache</a></li>
 <li><a href="#_testing">Testing</a></li>
+<li><a href="#_run_application">Run Application</a>
 <li><a href="#_tech_stacks">Tech Stacks</a></li>
 </ul>
 </li>
@@ -2430,25 +2431,35 @@ This Provider can be disabled by application.properties file.</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_run_application">Run Application</h3>
-<div class="sect3">
-
-
-  <pre class="CodeRay highlight"><code data-lang="bash">
+<div class="sect1">
+<h2 id="_run_application">Run Application</h2>
+Application can be run by different way , these command as seen below
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">
     Application can run with command
     $ java -jar Exchange-0.0.1-SNAPSHOT.jar
     $ mvn spring-boot:run
-  </code>
-  </pre>
+</code>
+</pre>
 
 
-  <pre class="CodeRay highlight"><code data-lang="bash">
+<pre class="CodeRay highlight"><code data-lang="bash">
     Application can run with docker via Dockerfile
-    $
-  </code>
-  </pre>
+    $ docker build -t exchange:latest .
+    $ docker run  --publish=8080:8080 exchange:latest
+    
+    Access docker and monitor docker process
+    $ docker ps
+    $ docker exec -it exchange:latest /bin/bash
+</code>
+</pre>
 
+<pre class="CodeRay highlight"><code data-lang="bash">
+    Application can run with docker-compose on project directory
+    $ docker-compose up
+</code>
+</pre>
+</div>
 </div>
 <h3 id="_tech_stacks">Tech Stacks</h3>
 <div class="ulist">
