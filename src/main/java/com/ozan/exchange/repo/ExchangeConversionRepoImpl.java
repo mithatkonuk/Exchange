@@ -36,24 +36,25 @@ public class ExchangeConversionRepoImpl implements DefaultOzanExchangeRepo
         return ozanExChangeTransactions;
     }
 
-    private List<OzanExChangeTransaction> getExchangeConversionHistory( String transaction, String date,
-                    Pageable pageable )
+    private List<OzanExChangeTransaction> getExchangeConversionHistory( String transaction,
+                    String date, Pageable pageable )
     {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<OzanExChangeTransaction> cq = cb.createQuery(OzanExChangeTransaction.class);
 
-        Root<OzanExChangeTransaction> exchangeConversionRoot = cq.from(OzanExChangeTransaction.class);
+        Root<OzanExChangeTransaction> exchangeConversionRoot =
+                        cq.from(OzanExChangeTransaction.class);
 
-        Predicate authorNamePredicate = null;
+        Predicate transactionPredicate = null;
         Predicate datePredicate = null;
 
         List<Predicate> predicates = new ArrayList<>();
         if(null != transaction && OzanStringUtils.isNotBlank(transaction))
         {
-            authorNamePredicate = cb.equal(exchangeConversionRoot.get("transaction"),
+            transactionPredicate = cb.equal(exchangeConversionRoot.get("transaction"),
                             UUID.fromString(transaction));
-            predicates.add(authorNamePredicate);
+            predicates.add(transactionPredicate);
         }
 
         if(null != date && OzanStringUtils.isNotBlank(date))
