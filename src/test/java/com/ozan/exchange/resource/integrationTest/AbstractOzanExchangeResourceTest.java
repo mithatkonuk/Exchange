@@ -4,6 +4,7 @@ import com.ozan.exchange.dto.OzanExchange;
 import com.ozan.exchange.dto.OzanPaging;
 import com.ozan.exchange.util.OzanObjectUtils;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,7 +28,7 @@ public class AbstractOzanExchangeResourceTest
 
     private MockMvc mockMvc;
 
-    @Before
+    @BeforeEach
     public void setup()
     {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
