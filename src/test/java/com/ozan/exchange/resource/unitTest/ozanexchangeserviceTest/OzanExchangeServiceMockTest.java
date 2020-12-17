@@ -1,4 +1,4 @@
-package com.ozan.exchange.resource.unitTest.OzanExchangeServiceTest;
+package com.ozan.exchange.resource.unitTest.ozanexchangeserviceTest;
 
 import com.ozan.exchange.domain.OzanExChangeTransaction;
 import com.ozan.exchange.service.ExchangeConversionService;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith( SpringExtension.class )
 @SpringBootTest
-public class OzanExchangeServiceTest
+public class OzanExchangeServiceMockTest
 {
 
     private ExchangeConversionService exchangeConversionService =
@@ -30,6 +30,8 @@ public class OzanExchangeServiceTest
     @Before
     public void beforeSet()
     {
+
+        // when fetch by transaction
         when(this.exchangeConversionService.exchangeHistory(anyString()))
                         .thenReturn(OzanExChangeTransaction.builder().amount(10.0).base("EUR")
                                         .conversion(95.2)
@@ -37,6 +39,7 @@ public class OzanExchangeServiceTest
                                         .dateCreated(DateUtils.parseDate("2020-12-17")).rate(9.52)
                                         .symbol("TRY").build());
 
+        // when fetch by date , offset,pagesize
         when(this.exchangeConversionService.exchangeHistory(anyString(), anyInt(), anyInt()))
                         .thenReturn(new PageImpl<>(
                                         List.of(OzanExChangeTransaction.builder().amount(10.0)
@@ -47,6 +50,7 @@ public class OzanExchangeServiceTest
                                                                         .parseDate("2020-12-17"))
                                                         .rate(9.52).symbol("TRY").build())));
 
+        // when fetch by transaction and date , offset , pagesize
         when(this.exchangeConversionService
                         .exchangeHistoryByTransactionAndCreatedDate(anyString(), anyString(),
                                         anyInt(), anyInt())).thenReturn(new PageImpl<>(
@@ -65,8 +69,9 @@ public class OzanExchangeServiceTest
     }
 
     @Test
-    public void check_rate_and_conversion()
+    public void check_rate_and_conversion_by_transaction()
     {
+
         OzanExChangeTransaction exChangeTransaction =
                         this.exchangeConversionService.exchangeHistory(anyString());
 
@@ -79,7 +84,7 @@ public class OzanExchangeServiceTest
     }
 
     @Test
-    public void check_paging_rate_and_conversion()
+    public void check_paging_rate_and_conversion_by_date()
     {
         Page<OzanExChangeTransaction> pageOzanExchangeTransaction = this.exchangeConversionService
                         .exchangeHistory(anyString(), anyInt(), anyInt());
@@ -93,7 +98,7 @@ public class OzanExchangeServiceTest
     }
 
     @Test
-    public void check_paging_rate_and_conversion_transaction_date()
+    public void check_paging_rate_and_conversion_by_transaction_date()
     {
         Page<OzanExChangeTransaction> pageOzanExchangeTransaction = this.exchangeConversionService
                         .exchangeHistoryByTransactionAndCreatedDate(anyString(), anyString(),

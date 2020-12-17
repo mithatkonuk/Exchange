@@ -1,4 +1,4 @@
-package com.ozan.exchange.resource.unitTest.errorTest;
+package com.ozan.exchange.resource.unitTest.errorCodeTest;
 
 import com.ozan.exchange.domain.OzanExChangeTransaction;
 import com.ozan.exchange.repo.ExchangeConversionRepo;

@@ -1,4 +1,4 @@
-package com.ozan.exchange.resource.unitTest.ExChangeProviderTest;
+package com.ozan.exchange.resource.unitTest.exchangeProviderTest;
 
 import com.ozan.exchange.dto.ExternalExchange;
 import com.ozan.exchange.rateExchangeProvider.RateApiExternalExchangeProvider;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith( SpringExtension.class )
 @SpringBootTest
-public class RateExternalApiProviderTest
+public class RateExternalApiProviderMockTest
 {
     private RateApiExternalExchangeProvider rateExchangeApiProvider =
                     Mockito.mock(RateApiExternalExchangeProvider.class);

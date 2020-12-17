@@ -1,4 +1,4 @@
-package com.ozan.exchange.resource.unitTest.errorTest;
+package com.ozan.exchange.resource.unitTest.errorCodeTest;
 
 import com.ozan.exchange.exception.ExchangeServiceParamException;
 import com.ozan.exchange.exception.error.ErrorCode;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith( SpringExtension.class )
 @SpringBootTest
-public class ErrorCodeTest
+public class ErrorCodeMockTest
 {
     private RateExchangeApiProvider rateExchangeApiProvider =
                     Mockito.mock(RateExchangeApiProvider.class);
