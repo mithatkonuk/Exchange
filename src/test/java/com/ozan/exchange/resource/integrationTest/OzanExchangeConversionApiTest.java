@@ -99,8 +99,8 @@ public class OzanExchangeConversionApiTest extends AbstractOzanExchangeResourceT
                         mvcResult.getResponse().getContentAsString());
 
         Assertions.assertNotNull(response);
-        Assertions.assertEquals(response.getError().getErrorCode().getErrorCode(),
-                        ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE.getErrorCode());
+        Assertions.assertEquals(response.getError().getErrorCode().getCode(),
+                        ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE.getCode());
     }
 
     @Test
@@ -120,8 +120,8 @@ public class OzanExchangeConversionApiTest extends AbstractOzanExchangeResourceT
                         mvcResult.getResponse().getContentAsString());
 
         Assertions.assertNotNull(response);
-        Assertions.assertEquals(response.getError().getErrorCode().getErrorCode(),
-                        ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_FORMAT_PROBLEM.getErrorCode());
+        Assertions.assertEquals(response.getError().getErrorCode().getCode(),
+                        ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_FORMAT_PROBLEM.getCode());
     }
 
     @Test
@@ -192,8 +192,8 @@ public class OzanExchangeConversionApiTest extends AbstractOzanExchangeResourceT
                         mvcResult.getResponse().getContentAsString());
 
         Assertions.assertEquals(
-                        ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_FORMAT_PROBLEM.getErrorCode(),
-                        response.getError().getErrorCode().getErrorCode());
+                        ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_FORMAT_PROBLEM.getCode(),
+                        response.getError().getErrorCode().getCode());
 
     }
 

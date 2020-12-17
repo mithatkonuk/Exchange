@@ -1,6 +1,7 @@
 package com.ozan.exchange.exception.error;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -8,16 +9,17 @@ import java.io.Serializable;
  * This class provide each different module errorCodes
  */
 @Getter
+@Setter
 public class ErrorCode implements Serializable
 {
 
     public static final ErrorCode NOT_ERROR = new ErrorCode(0, null);
-    private int errorCode;
+    private int code;
     private String description;
 
     public ErrorCode( int errorCode, String description )
     {
-        this.errorCode = errorCode;
+        this.code = errorCode;
         this.description = description;
     }
 
@@ -29,7 +31,7 @@ public class ErrorCode implements Serializable
     public static class EXTERNAL_SERVICE_PROVIDER
     {
         public static final ErrorCode EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND = new ErrorCode(1,
-                        "External service exchange given source / target is not supported");
+                        "Given Exchange source / Given Exchange target is not supported");
 
         public static final ErrorCode METHOD_ARGUMENT_INVALID =
                         new ErrorCode(2, "Given Argument is not valid");
@@ -45,7 +47,7 @@ public class ErrorCode implements Serializable
                         new ErrorCode(4, "Given Parameter is not acceptable");
 
         public static final ErrorCode ILLEGAL_ARGUMENT_FORMAT_PROBLEM = new ErrorCode(5,
-                        "Given Parameter format problem exist,date format [YYYY-MM-DD]");
+                        "Format problem exist on given Parameter ,date format [YYYY-MM-DD]");
 
         public static final ErrorCode NOT_FOUND = new ErrorCode(6, "Requested data is not found");
     }

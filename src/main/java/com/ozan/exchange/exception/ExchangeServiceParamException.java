@@ -12,6 +12,7 @@ public class ExchangeServiceParamException extends RuntimeException
     {
         super(message);
         this.errorCode = errorCode;
+        this.errorCode.setDescription(message);
     }
 
     public ExchangeServiceParamException( ErrorCode errorCode )

@@ -59,6 +59,6 @@ public class RateExchangeApiProvider implements ForgienExchangeProvider
     @Scheduled( fixedDelayString = "${forgien.service.provider.request.cache.ttl}" )
     public void cacheEvict()
     {
-        logger.info("Cahce is refreshed [cahce-evict]");
+        logger.info("Cahce is refreshed [cahce-evict-RateExchangeApiProvider]");
     }
 }

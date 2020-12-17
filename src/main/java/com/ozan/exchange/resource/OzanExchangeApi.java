@@ -52,7 +52,7 @@ public class OzanExchangeApi
         {
             throw new ExchangeServiceParamException(
                             ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE,
-                            "Given currency pair is not acceptable");
+                            "Given currency pair is not acceptable for exchange rate");
         }
 
     }
@@ -80,7 +80,7 @@ public class OzanExchangeApi
     }
 
     @OzanExecutionTimeLogged
-    @PutMapping( value = "/exchange/conversion" )
+    @GetMapping( value = "/exchange/conversion" )
     public Response exchange( @ApiParam( "Represent to source currency" ) @RequestParam( "base" )
     @NotNull @NotBlank String base,
                     @ApiParam( "Represent to target currency" ) @RequestParam( "symbol" )

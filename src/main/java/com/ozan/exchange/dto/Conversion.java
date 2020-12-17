@@ -28,7 +28,7 @@ public class Conversion
     private String symbol;
 
     @ApiModelProperty( notes = "amount" )
-    @PositiveOrZero( message = "The amount of siblings should be positive" )
+    @PositiveOrZero( message = "The amount of base currency should be positive" )
     private Double amount;
 
     @ApiModelProperty( notes = "detail" )

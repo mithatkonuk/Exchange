@@ -1,0 +1,254 @@
+= Ozan Exchange
+:toc: left
+
+This application is created for demo purpose.
+
+maintainer : mithatkonuk@gmail.com
+
+== Exchange Api
+
+ExchangeApi service provide exchange rate between currencies and support also conversion
+
+include::{snippets}/ozan-exchange-api-test/get_currency_pair_return_exchange_rate_and_200/auto-section.adoc[]
+include::{snippets}/ozan-exchange-api-test/get_currency_pair_illegal_argument_exception/auto-section.adoc[]
+include::{snippets}/ozan-exchange-api-test/get_exchange_rate_valid_input_return_and_200/auto-section.adoc[]
+include::{snippets}/ozan-exchange-api-test/get_exchange_rate_invalid_input_expect_no_content/auto-section.adoc[]
+include::{snippets}/ozan-exchange-api-test/post_exchange_rate_conversion_valid_input_return_status_200/auto-section.adoc[]
+include::{snippets}/ozan-exchange-api-test/post_exchange_conversion_invalid_input_expect_no_content/auto-section.adoc[]
+
+== Exchange Conversion Api
+
+include::{snippets}/ozan-exchange-conversion-api-test/create_exchange_transaction_return_bytransaction/auto-section.adoc[]
+include::{snippets}/ozan-exchange-conversion-api-test/return_illegal_argument_error_code_by_given_invalid_-transaction/auto-section.adoc[]
+include::{snippets}/ozan-exchange-conversion-api-test/create_exchange_transaction_return_bydate/auto-section.adoc[]
+include::{snippets}/ozan-exchange-conversion-api-test/return_illegal_argument_error_code_by_given_invalid_date/auto-section.adoc[]
+include::{snippets}/ozan-exchange-conversion-api-test/create_exchange_transaction_return_by_transaction_and_date/auto-section.adoc[]
+include::{snippets}/ozan-exchange-conversion-api-test/return_illegal_argument_error_code_by_given_invalid_transaction/auto-section.adoc[]
+
+==  System Design
+
+=== Service Providers
+
+====== ForgienExchangeProvider
+
+Simple Exchange Provider Interface defined to give functionality on providers.Extendable interface provide 'getExchange' method to handle external service calls.
+
+[source,java]
+.ForgienExchangeProvider.java
+----
+public interface ForgienExchangeProvider
+{
+            @RequestMapping( method = RequestMethod.GET, 
+                    value = "${forgien_exchange_providers.feign.exchange_path}" )
+            ExternalExchange getExchange( @RequestParam( "base" ) String base,
+                                          @RequestParam( "symbols" ) String symbols );
+}
+----
+
+OzanExchange support two forgienExchangeProviders and configurations defined as property file
+
+====== RateApiExternalExchangeProvider
+
+Simple ForgienExchangeProvider implementation which wrapper 'RestTemplate' to handle external service calls.
+This Provider can be disabled by application.properties file.
+
+[source,java]
+.RateApiExternalExchangeProvider.java
+----
+public class RateApiExternalExchangeProvider implements ForgienExchangeProvider
+{
+    private static final Logger logger =
+                    LoggerFactory.getLogger(RateApiExternalExchangeProvider.class);
+
+    private final RestTemplate restTemplate;
+    private final OzanRateProviderRestConfiguration configuration;
+    private String URI;
+
+    public RateApiExternalExchangeProvider( RestTemplate restTemplate,
+                    OzanRateProviderRestConfiguration configuration )
+    {
+        this.restTemplate = restTemplate;
+        this.configuration = configuration;
+        this.URI = configuration.getUrl() + this.configuration.getExchangePath();
+    }
+
+    @Cacheable( value = "${forgien.service.provider.request.cache.name}",
+                keyGenerator = "forgienCacheKeyGenerator" )
+    @Override
+    public ExternalExchange getExchange( String base, String symbols )
+    {
+        this.URI = this.URI.replace("{base}", base).replace("{symbols}", symbols);
+        logger.
+            info("[external-service (" + configuration.getName() + ")]" +
+                " - Generated url : " + this.URI);
+
+        ExternalExchange externalExchange =
+        restTemplate.getForObject(this.URI, ExternalExchange.class);
+
+        logger.info("[external-service-response] - " + externalExchange.toString());
+
+        return externalExchange;
+    }
+
+
+    @CacheEvict( allEntries = true,
+                 cacheNames = { "${forgien.service.provider.request.cache.name}" } )
+    @Scheduled( fixedDelayString = "${forgien.service.provider.request.cache.ttl}" )
+    public void cacheEvict()
+    {
+        logger.info("Cahce is refreshed [cahce-evict-RateApiExternalExchangeProvider]");
+    }
+}
+----
+
+====== RateExchangeApiProvider
+
+Simple ForgienExchangeProvider implementation which wrapper 'FeignClient' to handle external service.
+
+[source,java]
+.RateExchangeApiProvider.java
+----
+@Component( "rateApiProvider" )
+public class RateExchangeApiProvider implements ForgienExchangeProvider
+{
+
+    private static final Logger logger = LoggerFactory.getLogger(RateExchangeApiProvider.class);
+
+    private ForgienExchangeProvider forgienExchangeProvider;
+
+    @Value( "${forgien_exchange_providers.feign.name}" )
+    private String providerName;
+
+    @Autowired
+    public RateExchangeApiProvider( @Qualifier( "${forgien_exchange_providers.feign.name}" )
+                    ForgienExchangeProvider forgienExchangeProvider )
+    {
+        this.forgienExchangeProvider = forgienExchangeProvider;
+    }
+
+    @Cacheable( value = "${forgien.service.provider.request.cache.name}",
+                keyGenerator = "forgienCacheKeyGenerator" )
+    @Override
+    public ExternalExchange getExchange( String base, String symbols )
+    {
+        try
+        {
+            ExternalExchange externalExchange = forgienExchangeProvider.getExchange(base, symbols);
+
+            logger.info("[external-service (" + providerName + ")] :  " +
+                            externalExchange.toString());
+
+            return externalExchange;
+        }
+        catch( FeignException e )
+        {
+            throw
+                 new ExternalServiceException(ErrorCode
+                    .EXTERNAL_SERVICE_PROVIDER.EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND,
+                    "Currently External service is not supporting given exchange");
+        }
+    }
+
+    @CacheEvict( allEntries = true,
+                 cacheNames = { "${forgien.service.provider.request.cache.name}" } )
+    @Scheduled( fixedDelayString = "${forgien.service.provider.request.cache.ttl}" )
+    public void cacheEvict()
+    {
+        logger.info("Cahce is refreshed [cahce-evict-RateExchangeApiProvider]");
+    }
+}
+----
+
+=== Cache
+
+OzanExchange Application has ability to cache external service rates and expire with specific time-to-live configuration which is defined on application.properties.
+
+[source,java]
+.OzanExchangeCacheConfiguration.java
+----
+@Configuration
+public class OzanExchangeCacheConfiguration
+{
+
+    @Value( "${forgien.service.provider.request.cache.name}" )
+    private String serviceProviderCacheName;
+
+    @Bean
+    public CacheManager cacheManager()
+    {
+        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        Cache ServiceProviderRequestCache = new ConcurrentMapCache(serviceProviderCacheName);
+        cacheManager.setCaches(Arrays.asList(ServiceProviderRequestCache));
+        return cacheManager;
+    }
+
+    @Bean( "forgienCacheKeyGenerator" )
+    public KeyGenerator keyGenerator()
+    {
+        return new ForgienServiceProviderCacheKeyGenerator();
+    }
+}
+----
+
+Cache Key Generator policy
+
+[source,java]
+.ForgienServiceProviderCacheKeyGenerator.java
+----
+
+public class ForgienServiceProviderCacheKeyGenerator implements KeyGenerator
+{
+    @Override
+    public Object generate( Object o, Method method, Object... objects )
+    {
+        String[] params = (String[])objects;
+
+        return params[0] + "-" + params[1];
+    }
+}
+----
+
+=== Testing
+
+Test implementations located , link: {snippets}/../../src/test/java/com/ozan/exchange/resource/
+
+===== Unit Testing
+
+- Each functionality Test created on '/test' folder
+
+===== Integration Testing
+
+- Integration Test include external call with MockMvc on random port to process each scenario
+
+==== Swagger Document
+
+OzanExchange Application also support swagger , here is demo link: http://localhost:8080/swagger-ui/index.html#/
+
+==== Central Logging
+
+OzanExchange support two logging profile , dev and prod
+
+dev Mode :
+
+        dev profile support logging to local directory '/tmp/ozan_exchange/logs'
+
+prod Mode :
+
+        prod profile support logging to central
+          loggly central logging
+          email:galami2745@febeks.com -- temporary mail taken
+          account name : ozanExchange
+          password : Password_123456
+          URL : https://ozanexchange.loggly.com/dashboards/dashboard/2846642b-b55a-4bfa-9a0e-1979962e2fc8/view
+
+=== Tech Stacks
+
+- Spring boot ref : https://spring.io/projects/spring-boot
+- H2 database (schema.sql)
+- Spring AOP ref: https://docs.spring.io/spring-framework/docs/2.5.x/reference/aop.html
+- Spring Cache ref : https://spring.io/guides/gs/caching/
+- Spring JPA ref : https://spring.io/projects/spring-data-jpa
+- Lombok ref: https://projectlombok.org/
+- asciidoctor ref: https://asciidoctor.org/
+- LogBack ref: http://logback.qos.ch/
+

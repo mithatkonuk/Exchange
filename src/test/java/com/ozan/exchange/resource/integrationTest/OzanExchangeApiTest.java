@@ -78,8 +78,8 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
                         mvcResult.getResponse().getContentAsString());
 
         ResponseError responseError = response.getError();
-        Assertions.assertEquals(responseError.getErrorCode().getErrorCode(),
-                        ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE.getErrorCode());
+        Assertions.assertEquals(responseError.getErrorCode().getCode(),
+                        ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE.getCode());
     }
 
     @Test
@@ -129,9 +129,9 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
         Response response = OzanObjectUtils.extractResponse(
                         mvcResult.getResponse().getContentAsString());
 
-        Assertions.assertEquals(response.getError().getErrorCode().getErrorCode(),
+        Assertions.assertEquals(response.getError().getErrorCode().getCode(),
                         ErrorCode.EXTERNAL_SERVICE_PROVIDER.EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND
-                                        .getErrorCode());
+                                        .getCode());
     }
 
     @Test
@@ -145,7 +145,7 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
 
         // then
         MvcResult mvcResult = this.mock()
-                        .perform(MockMvcRequestBuilders.put("/exchangeApi/exchange/conversion")
+                        .perform(MockMvcRequestBuilders.get("/exchangeApi/exchange/conversion")
                                         .param("base", base).param("symbol", symbol)
                                         .param("amount", amount).param("detail", detail))
                         .andExpect(status().isOk()).andReturn();
@@ -176,7 +176,7 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
 
         // then
         MvcResult mvcResult = this.mock()
-                        .perform(MockMvcRequestBuilders.put("/exchangeApi/exchange/conversion")
+                        .perform(MockMvcRequestBuilders.get("/exchangeApi/exchange/conversion")
                                         .param("base", base).param("symbol", symbol)
                                         .param("amount", amount).param("detail", detail))
                         .andExpect(status().isOk()).andReturn();
@@ -184,9 +184,9 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
         // return
         Response response = OzanObjectUtils.extractResponse(
                         mvcResult.getResponse().getContentAsString());
-        Assertions.assertEquals(response.getError().getErrorCode().getErrorCode(),
+        Assertions.assertEquals(response.getError().getErrorCode().getCode(),
                         ErrorCode.EXTERNAL_SERVICE_PROVIDER.EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND
-                                        .getErrorCode());
+                                        .getCode());
 
         logger.info(this.getClass().getSimpleName() + " - " + response.getError().toString());
 

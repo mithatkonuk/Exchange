@@ -1,12 +1,22 @@
 package com.ozan.exchange.resource.integrationTest;
 
+import capital.scalable.restdocs.AutoDocumentation;
+import capital.scalable.restdocs.jackson.JacksonResultHandlers;
+import capital.scalable.restdocs.response.ResponseModifyingPreprocessors;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ozan.exchange.dto.OzanExchange;
 import com.ozan.exchange.dto.OzanPaging;
 import com.ozan.exchange.util.OzanObjectUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.cli.CliDocumentation;
+import org.springframework.restdocs.http.HttpDocumentation;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -19,20 +29,44 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AbstractOzanExchangeResourceTest
 {
 
-    //    @Rule
-    //    public JUnitRestDocumentation restDocumentation =
-    //                    new JUnitRestDocumentation("target/generated-snippets");
-
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    @Rule
+    public JUnitRestDocumentation restDocumentation =
+                    new JUnitRestDocumentation("target/generated-snippets");
     @Autowired
     private WebApplicationContext wac;
 
     private MockMvc mockMvc;
 
-    @BeforeEach
+    @Before
     public void setup()
     {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        //                        .apply(documentationConfiguration(this.restDocumentation))
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
+                        .alwaysDo(JacksonResultHandlers.prepareJackson(objectMapper))
+                        .alwaysDo(MockMvcRestDocumentation.document("{class-name}/{method-name}",
+                                        Preprocessors.preprocessRequest(),
+                                        Preprocessors.preprocessResponse(
+                                                        ResponseModifyingPreprocessors
+                                                                        .replaceBinaryContent(),
+                                                        ResponseModifyingPreprocessors
+                                                                        .limitJsonArrayLength(
+                                                                                        objectMapper),
+                                                        Preprocessors.prettyPrint())))
+                        .apply(MockMvcRestDocumentation
+                                        .documentationConfiguration(restDocumentation).uris()
+                                        .withScheme("http").withHost("localhost").withPort(8080)
+                                        .and().snippets()
+                                        .withDefaults(CliDocumentation.curlRequest(),
+                                                        HttpDocumentation.httpRequest(),
+                                                        HttpDocumentation.httpResponse(),
+                                                        AutoDocumentation.requestFields(),
+                                                        AutoDocumentation.responseFields(),
+                                                        AutoDocumentation.pathParameters(),
+                                                        AutoDocumentation.requestParameters(),
+                                                        AutoDocumentation.description(),
+                                                        AutoDocumentation.methodAndPath(),
+                                                        AutoDocumentation.section())).build();
+
     }
 
     public MockMvc mock()
@@ -44,7 +78,7 @@ public class AbstractOzanExchangeResourceTest
                     String symbol, String amount, String detail ) throws Exception
     {
         MvcResult mvcResult = this.mock()
-                        .perform(MockMvcRequestBuilders.put(url).param("base", base)
+                        .perform(MockMvcRequestBuilders.get(url).param("base", base)
                                         .param("symbol", symbol).param("amount", amount)
                                         .param("detail", detail)).andExpect(status().isOk())
                         .andReturn();
