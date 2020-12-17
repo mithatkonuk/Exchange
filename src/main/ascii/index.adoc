@@ -239,7 +239,37 @@ prod Mode :
           email:galami2745@febeks.com -- temporary mail taken
           account name : ozanExchange
           password : Password_123456
-          URL : https://ozanexchange.loggly.com/dashboards/dashboard/2846642b-b55a-4bfa-9a0e-1979962e2fc8/view
+          URL : https://ozanexchange.loggly.com/search#terms=tag:logback&from=2020-12-14T21:00:00.000Z&until=2020-12-15T21:00:00.000Z&source_group=&filter=tag;logback
+
+
+=== Run Application
+Application can be run by different way , these command as seen below
+[source,bash]
+.bash.sh
+----
+  command line
+    $ java -jar Exchange-0.0.1-SNAPSHOT.jar
+    $ mvn spring-boot:run
+
+
+   docker via Dockerfile
+    $ docker build -t exchange:latest .
+    $ docker run  --publish=8080:8080 exchange:latest
+
+    Access docker and monitor docker process
+    $ docker ps
+    $ docker exec -it exchange:latest /bin/bash
+
+
+  docker-compose
+    $ docker-compose up
+----
+
+
+
+
+
+
 
 === Tech Stacks
 
