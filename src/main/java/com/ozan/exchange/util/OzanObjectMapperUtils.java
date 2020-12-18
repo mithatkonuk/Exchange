@@ -13,7 +13,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OzanObjectUtils
+/**
+ * Simple Object mapping Utility
+ *
+ * @author mithat.konuk
+ */
+public class OzanObjectMapperUtils
 {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

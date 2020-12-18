@@ -8,12 +8,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * General Web Response Error
+ */
 @JsonInclude( JsonInclude.Include.NON_NULL )
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-@ApiModel( description = "Definition of General Response Error" )
+@ApiModel( description = "Ozan Web Response Error" )
 public class ResponseError
 {
     public static final ResponseError EMPTY_RESPONSE_ERROR =

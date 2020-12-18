@@ -1,5 +1,6 @@
 package com.ozan.exchange.util;
 
+import com.ozan.exchange.exception.NotFoundException;
 import com.ozan.exchange.exception.ExchangeServiceParamException;
 import com.ozan.exchange.exception.error.ErrorCode;
 
@@ -7,21 +8,13 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.UUID;
 
+/**
+ * Assert Utilities
+ *
+ * @author mithat.konuk
+ */
 public class OzanAssertUtils
 {
-
-    public static void assertTransaction( final String uuid )
-    {
-        try
-        {
-            UUID.fromString(uuid);
-        }
-        catch( IllegalArgumentException e )
-        {
-            throw new ExchangeServiceParamException(
-                            ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE);
-        }
-    }
 
     public static void assertNotNull( final Object param )
     {
@@ -60,7 +53,7 @@ public class OzanAssertUtils
     {
         if(OzanCollectionUtils.isEmpty(collection))
         {
-            throw new ExchangeServiceParamException(errorCode);
+            throw new NotFoundException(errorCode);
         }
     }
 

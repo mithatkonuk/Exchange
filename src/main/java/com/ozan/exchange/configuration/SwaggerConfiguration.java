@@ -6,9 +6,6 @@ import io.swagger.annotations.License;
 import io.swagger.annotations.SwaggerDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -22,6 +19,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
+/**
+ * Configuration for swagger
+ * @author mithat.konuk
+ */
 @Configuration
 @EnableSwagger2
 @SwaggerDefinition( info = @Info( description = "Ozan Exchange Service",
@@ -49,7 +50,7 @@ public class SwaggerConfiguration
                     "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", Arrays.asList());
 
     private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES =
-                    new HashSet<String>(Arrays.asList("application/json", "application/xml"));
+                    new HashSet<String>(Arrays.asList("application/json"));
 
     @Bean
     public Docket api()

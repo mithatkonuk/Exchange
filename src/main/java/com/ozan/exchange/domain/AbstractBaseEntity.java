@@ -8,6 +8,10 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * Abstract Ozan Base Entity
+ * @author mithat.konuk
+ */
 @MappedSuperclass
 @Getter
 public abstract class AbstractBaseEntity implements Serializable
@@ -16,11 +20,11 @@ public abstract class AbstractBaseEntity implements Serializable
 
     @Id
     @Column( name = "transaction_id", nullable = false )
-    protected UUID transaction;
+    protected String transaction;
 
     public AbstractBaseEntity()
     {
-        this.transaction = UUID.randomUUID();
+        this.transaction = UUID.randomUUID().toString();
     }
 
     @Override

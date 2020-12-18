@@ -1,5 +1,6 @@
 package com.ozan.exchange.exception.error;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,9 +8,12 @@ import java.io.Serializable;
 
 /**
  * This class provide each different module errorCodes
+ *
+ * @author mithat.konuk
  */
 @Getter
 @Setter
+@Builder
 public class ErrorCode implements Serializable
 {
 
@@ -54,7 +58,7 @@ public class ErrorCode implements Serializable
 
     public static class GENERIC
     {
-        public static final ErrorCode GENERIC_ERROR = new ErrorCode(7, "Generic Error occured");
+        public static final ErrorCode GENERIC_ERROR = new ErrorCode(7, "Generic Error ,Please contact with team");
 
     }
 

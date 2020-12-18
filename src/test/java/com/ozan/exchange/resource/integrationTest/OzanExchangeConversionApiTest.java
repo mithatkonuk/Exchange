@@ -5,7 +5,7 @@ import com.ozan.exchange.dto.OzanExchange;
 import com.ozan.exchange.dto.OzanPaging;
 import com.ozan.exchange.exception.error.ErrorCode;
 import com.ozan.exchange.util.OzanDateUtils;
-import com.ozan.exchange.util.OzanObjectUtils;
+import com.ozan.exchange.util.OzanObjectMapperUtils;
 import com.ozan.exchange.web.util.Response;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -48,7 +48,7 @@ public class OzanExchangeConversionApiTest extends AbstractOzanExchangeResourceT
                         OzanDateUtils.YYYY_MM_DD.format(OzanDateUtils.nowAsDate()), true);
 
         Collection<OzanExchange> exchanges =
-                        OzanObjectUtils.convertCollection(ozanPaging.getData(), OzanExchange.class);
+                        OzanObjectMapperUtils.convertCollection(ozanPaging.getData(), OzanExchange.class);
 
 
         for( OzanExchange exchange : exchanges )
@@ -95,7 +95,7 @@ public class OzanExchangeConversionApiTest extends AbstractOzanExchangeResourceT
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isBadRequest()).andReturn();
 
-        Response response = OzanObjectUtils.extractResponse(
+        Response response = OzanObjectMapperUtils.extractResponse(
                         mvcResult.getResponse().getContentAsString());
 
         Assertions.assertNotNull(response);
@@ -116,7 +116,7 @@ public class OzanExchangeConversionApiTest extends AbstractOzanExchangeResourceT
                                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isBadRequest()).andReturn();
 
-        Response response = OzanObjectUtils.extractResponse(
+        Response response = OzanObjectMapperUtils.extractResponse(
                         mvcResult.getResponse().getContentAsString());
 
         Assertions.assertNotNull(response);
@@ -149,7 +149,7 @@ public class OzanExchangeConversionApiTest extends AbstractOzanExchangeResourceT
 
         // return
         Collection<OzanExchange> exchanges =
-                        OzanObjectUtils.convertCollection(ozanPaging.getData(), OzanExchange.class);
+                        OzanObjectMapperUtils.convertCollection(ozanPaging.getData(), OzanExchange.class);
 
         Assertions.assertEquals(exchanges.size(), 1);
         for( OzanExchange exchange : exchanges )
@@ -188,7 +188,7 @@ public class OzanExchangeConversionApiTest extends AbstractOzanExchangeResourceT
                         .andExpect(status().isBadRequest()).andReturn();
 
         // return
-        Response response = OzanObjectUtils.extractResponse(
+        Response response = OzanObjectMapperUtils.extractResponse(
                         mvcResult.getResponse().getContentAsString());
 
         Assertions.assertEquals(

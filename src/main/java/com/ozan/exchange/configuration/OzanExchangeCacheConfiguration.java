@@ -12,6 +12,11 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 
+/**
+ * Ozan Exchange Caching Configurations
+ *
+ * @author mithat.konuk
+ */
 @Configuration
 public class OzanExchangeCacheConfiguration
 {

@@ -18,7 +18,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * We can use Criteria to make dynamic here
+ * Custom Exchange Conversion Repo implementation
+ *
+ * @author mithat.konuk
+ * @see com.ozan.exchange.repo.DefaultOzanExchangeRepo
  */
 @Repository
 public class ExchangeConversionRepoImpl implements DefaultOzanExchangeRepo

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * This class is represent of client exchange response
+ * This class is represent of client exchange rate response data
  */
 @Builder
 @AllArgsConstructor

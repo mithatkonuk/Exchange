@@ -10,7 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * you can also set external provider like this to extend Forgien Exchange Provider
+ * RateApiExternalExchangeProvider implementation of  ForgienExchangeProvider
+ * wrapper RestTemplate
+ *
+ * @author mithat.konuk
  */
 public class RateApiExternalExchangeProvider implements ForgienExchangeProvider
 {
@@ -37,11 +40,11 @@ public class RateApiExternalExchangeProvider implements ForgienExchangeProvider
         this.URI = this.URI.replace("{base}", base).replace("{symbols}", symbols);
         logger.info("[external-service (" + configuration.getName() + ")]" + " - Generated url : " +
                         this.URI);
-        ExternalExchange externalExchange = restTemplate.getForObject(this.URI, ExternalExchange.class);
+        ExternalExchange externalExchange =
+                        restTemplate.getForObject(this.URI, ExternalExchange.class);
         logger.info("[external-service-response] - " + externalExchange.toString());
         return externalExchange;
     }
-
 
     @CacheEvict( allEntries = true,
                  cacheNames = { "${forgien.service.provider.request.cache.name}" } )

@@ -266,8 +266,34 @@ Application can be run by different way , these command as seen below
 ----
 
 
+=== Error Response
 
+Ozan Exchange Application has general Response Error mechanism to give client detail on response
 
+EXTERNAL_SERVICE_PROVIDER::
+* EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND
+** Code : 1
+** Description : "Given Exchange source / Given Exchange target is not supported"
+* METHOD_ARGUMENT_INVALID
+** Code : 2
+** Description : "Given Argument is not valid"
+
+EXCHANGE_SERVICE::
+* ILLEGAL_ARGUMENT_NULL
+** Code : 3
+** Description: "Given Parameter must not be null"
+* ILLEGAL_ARGUMENT_NOT_ACCEPTABLE
+** Code : 4
+** Description : "Given Parameter is not acceptable"
+* ILLEGAL_ARGUMENT_FORMAT_PROBLEM
+** Code : 5
+** Description:"Format problem exist on given Parameter ,date format [YYYY-MM-DD]"
+* NOT_FOUND
+** Code : 6
+** Description : "Requested data is not found"
+GENERIC::
+** Code : 7
+** Description : "Generic Error ,Please contact with team"
 
 
 

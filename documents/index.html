@@ -469,6 +469,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_service_providers">Service Providers</a></li>
 <li><a href="#_cache">Cache</a></li>
 <li><a href="#_testing">Testing</a></li>
+<li><a href="#_central_logging">Logging</a></li>
+<li><a href="#_error_response">Error Response</a></li>
 <li><a href="#_run_application">Run Application</a>
 <li><a href="#_tech_stacks">Tech Stacks</a></li>
 </ul>
@@ -2404,10 +2406,11 @@ This Provider can be disabled by application.properties file.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_central_logging">Central Logging</h4>
+<h2 id="_central_logging">Central Logging</h2>
 <div class="paragraph">
 <p>OzanExchange support two logging profile , dev and prod</p>
 </div>
+<div class="literalblock"><pre><div class="content,icon-warning">logging mode can modified by given key 'spring.profiles.active=dev,prod'</div> </pre></div>
 <div class="paragraph">
 <p>dev Mode :</p>
 </div>
@@ -2431,6 +2434,121 @@ This Provider can be disabled by application.properties file.</p>
 </div>
 </div>
 </div>
+  <div class="sect2">
+    <h3 id="_error_response">Error Response</h3>
+    <div class="paragraph">
+      <p>Ozan Exchange Application has general Response Error mechanism to give client detail on response</p>
+    </div>
+    <div class="dlist">
+      <dl>
+        <dt class="hdlist1">EXTERNAL_SERVICE_PROVIDER</dt>
+        <dd>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND</p>
+                <div class="ulist">
+                  <ul>
+                    <li>
+                      <p>Code : 1</p>
+                    </li>
+                    <li>
+                      <p>Description : "Given Exchange source / Given Exchange target is not supported"</p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <p>METHOD_ARGUMENT_INVALID</p>
+                <div class="ulist">
+                  <ul>
+                    <li>
+                      <p>Code : 2</p>
+                    </li>
+                    <li>
+                      <p>Description : "Given Argument is not valid"</p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </dd>
+        <dt class="hdlist1">EXCHANGE_SERVICE</dt>
+        <dd>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>ILLEGAL_ARGUMENT_NULL</p>
+                <div class="ulist">
+                  <ul>
+                    <li>
+                      <p>Code : 3</p>
+                    </li>
+                    <li>
+                      <p>Description: "Given Parameter must not be null"</p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <p>ILLEGAL_ARGUMENT_NOT_ACCEPTABLE</p>
+                <div class="ulist">
+                  <ul>
+                    <li>
+                      <p>Code : 4</p>
+                    </li>
+                    <li>
+                      <p>Description : "Given Parameter is not acceptable"</p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <p>ILLEGAL_ARGUMENT_FORMAT_PROBLEM</p>
+                <div class="ulist">
+                  <ul>
+                    <li>
+                      <p>Code : 5</p>
+                    </li>
+                    <li>
+                      <p>Description:"Format problem exist on given Parameter ,date format [YYYY-MM-DD]"</p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <p>NOT_FOUND</p>
+                <div class="ulist">
+                  <ul>
+                    <li>
+                      <p>Code : 6</p>
+                    </li>
+                    <li>
+                      <p>Description : "Requested data is not found"</p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </dd>
+        <dt class="hdlist1">GENERIC</dt>
+        <dd>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>Code : 7</p>
+              </li>
+              <li>
+                <p>Description : "Generic Error ,Please contact with team"</p>
+              </li>
+            </ul>
+          </div>
+        </dd>
+      </dl>
+    </div>
+  </div>
 <div class="sect1">
 <h2 id="_run_application">Run Application</h2>
 Application can be run by different way , these command as seen below

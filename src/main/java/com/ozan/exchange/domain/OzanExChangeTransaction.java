@@ -8,6 +8,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+/**
+ * Represent of transaction table
+ * @author mithat.konuk
+ */
 @Entity
 @Table( name = "exchange_transaction_table" )
 @NoArgsConstructor

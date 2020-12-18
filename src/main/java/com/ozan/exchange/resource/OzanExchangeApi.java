@@ -23,6 +23,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
+/**
+ * Exchange Api
+ *
+ * @author mithat.konuk
+ */
 @RestController
 @RequestMapping( "exchangeApi" )
 @Validated

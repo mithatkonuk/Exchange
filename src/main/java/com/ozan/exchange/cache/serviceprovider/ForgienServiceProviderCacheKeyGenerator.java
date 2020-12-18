@@ -4,6 +4,12 @@ import org.springframework.cache.interceptor.KeyGenerator;
 
 import java.lang.reflect.Method;
 
+/**
+ * Cache key generator
+ * please be sure have two arguments when cache used,
+ * we can also handle one parameter method for caching
+ * @author mithat.konuk
+ */
 public class ForgienServiceProviderCacheKeyGenerator implements KeyGenerator
 {
     @Override

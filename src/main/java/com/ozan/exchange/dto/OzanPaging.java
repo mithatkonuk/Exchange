@@ -4,6 +4,10 @@ import lombok.*;
 
 import java.io.Serializable;
 
+/**
+ * General Ozan  Paging
+ * @author mithat.konuk
+ */
 @Builder
 @Getter
 @Data

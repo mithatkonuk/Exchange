@@ -14,6 +14,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+/**
+ * RateExchangeApiProvider implementation of ForgienExchangeProvider which is wrapper Feign Rate Provider
+ *
+ * @author mithat.konuk
+ */
 @Component( "rateApiProvider" )
 public class RateExchangeApiProvider implements ForgienExchangeProvider
 {

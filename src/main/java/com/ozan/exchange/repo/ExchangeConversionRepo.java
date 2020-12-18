@@ -15,7 +15,7 @@ public interface ExchangeConversionRepo
                 extends PagingAndSortingRepository<OzanExChangeTransaction, Long>,
                 DefaultOzanExchangeRepo
 {
-    Optional<OzanExChangeTransaction> findByTransaction( UUID transaction );
+    Optional<OzanExChangeTransaction> findByTransaction( String transaction );
 
     Page<OzanExChangeTransaction> findByDateCreated( Date dateCreated, Pageable pageable );
 }

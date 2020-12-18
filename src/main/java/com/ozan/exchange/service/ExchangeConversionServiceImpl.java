@@ -2,7 +2,7 @@ package com.ozan.exchange.service;
 
 import com.ozan.exchange.domain.OzanExChangeTransaction;
 import com.ozan.exchange.dto.OzanExchange;
-import com.ozan.exchange.exception.ExchangeHistoryNotFoundException;
+import com.ozan.exchange.exception.NotFoundException;
 import com.ozan.exchange.exception.error.ErrorCode;
 import com.ozan.exchange.repo.ExchangeConversionRepo;
 import com.ozan.exchange.util.OzanAssertUtils;
@@ -19,8 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
+/**
+ * Exchange Conversion Service
+ *
+ * @author mithat.konuk
+ */
 @AllArgsConstructor
 @Service( "exchangeConversionService" )
 public class ExchangeConversionServiceImpl implements ExchangeConversionService
@@ -32,12 +36,11 @@ public class ExchangeConversionServiceImpl implements ExchangeConversionService
     public OzanExChangeTransaction exchangeHistory( final String transaction )
     {
         OzanAssertUtils.assertIsBlank(transaction);
-        OzanAssertUtils.assertTransaction(transaction);
 
         Optional<OzanExChangeTransaction> exchangeConversion =
-                        exchangeConversionRepo.findByTransaction(UUID.fromString(transaction));
+                        exchangeConversionRepo.findByTransaction(transaction);
 
-        return exchangeConversion.orElseThrow(() -> new ExchangeHistoryNotFoundException(
+        return exchangeConversion.orElseThrow(() -> new NotFoundException(
                         ErrorCode.EXCHANGE_SERVICE.NOT_FOUND));
     }
 
@@ -56,7 +59,7 @@ public class ExchangeConversionServiceImpl implements ExchangeConversionService
 
         if(OzanCollectionUtils.isEmpty(exchangeConversions.getContent()))
         {
-            throw new ExchangeHistoryNotFoundException(ErrorCode.EXCHANGE_SERVICE.NOT_FOUND);
+            throw new NotFoundException(ErrorCode.EXCHANGE_SERVICE.NOT_FOUND);
         }
 
         return exchangeConversions;
@@ -68,7 +71,6 @@ public class ExchangeConversionServiceImpl implements ExchangeConversionService
     {
         OzanAssertUtils.assertNotNullPair(transaction, createdDate);
         OzanAssertUtils.assertDateFormat(createdDate);
-        OzanAssertUtils.assertTransaction(transaction);
 
         Pageable pageable = PageRequest.of(offset, pageSize);
 

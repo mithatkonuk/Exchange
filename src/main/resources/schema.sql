@@ -1,6 +1,6 @@
 CREATE TABLE exchange_transaction_table
 (
-    transaction_id    UUID NOT NULL,
+    transaction_id    VARCHAR(255) NOT NULL,
     base              VARCHAR(5),
     symbol            VARCHAR(5),
     range             DOUBLE not null,

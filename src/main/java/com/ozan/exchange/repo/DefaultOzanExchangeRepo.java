@@ -5,6 +5,10 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+/**
+ * Exchange Transaction Repo
+ * operation on requested conversion ( exchange transaction)
+ */
 public interface DefaultOzanExchangeRepo
 {
     List<OzanExChangeTransaction> exchangeHistory( String transaction, String createdDate,

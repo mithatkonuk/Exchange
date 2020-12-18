@@ -2,6 +2,10 @@ package com.ozan.exchange.util;
 
 import java.util.UUID;
 
+/**
+ * Simple String Utility
+ *
+ */
 public class OzanStringUtils
 {
     public static final int PAIR_LENGHT = 2;

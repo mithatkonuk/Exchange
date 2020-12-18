@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * External Exchange Service response entity
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

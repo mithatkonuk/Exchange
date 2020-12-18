@@ -6,10 +6,9 @@ import capital.scalable.restdocs.response.ResponseModifyingPreprocessors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ozan.exchange.dto.OzanExchange;
 import com.ozan.exchange.dto.OzanPaging;
-import com.ozan.exchange.util.OzanObjectUtils;
+import com.ozan.exchange.util.OzanObjectMapperUtils;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
@@ -84,7 +83,7 @@ public class AbstractOzanExchangeResourceTest
                         .andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
-        return OzanObjectUtils.extractBodyMessage(content, OzanExchange.class);
+        return OzanObjectMapperUtils.extractBodyMessage(content, OzanExchange.class);
     }
 
     public OzanExchange getExchangeHistoryByTransaction( String url, String transaction,
@@ -100,7 +99,7 @@ public class AbstractOzanExchangeResourceTest
 
         MvcResult mvcResult = resultActions.andReturn();
 
-        return OzanObjectUtils.extractBodyMessage(mvcResult.getResponse().getContentAsString(),
+        return OzanObjectMapperUtils.extractBodyMessage(mvcResult.getResponse().getContentAsString(),
                         OzanExchange.class);
     }
 
@@ -117,7 +116,7 @@ public class AbstractOzanExchangeResourceTest
 
         MvcResult mvcResult = resultActions.andReturn();
 
-        return OzanObjectUtils.extractBodyMessage(mvcResult.getResponse().getContentAsString(),
+        return OzanObjectMapperUtils.extractBodyMessage(mvcResult.getResponse().getContentAsString(),
                         OzanPaging.class);
     }
 
@@ -135,7 +134,7 @@ public class AbstractOzanExchangeResourceTest
 
         MvcResult mvcResult = resultActions.andReturn();
 
-        return OzanObjectUtils.extractBodyMessage(mvcResult.getResponse().getContentAsString(),
+        return OzanObjectMapperUtils.extractBodyMessage(mvcResult.getResponse().getContentAsString(),
                         OzanPaging.class);
     }
 

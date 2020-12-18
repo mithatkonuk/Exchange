@@ -4,7 +4,7 @@ import com.ozan.exchange.configuration.OzanExchangeConfiguration;
 import com.ozan.exchange.dto.Conversion;
 import com.ozan.exchange.dto.OzanExchange;
 import com.ozan.exchange.exception.error.ErrorCode;
-import com.ozan.exchange.util.OzanObjectUtils;
+import com.ozan.exchange.util.OzanObjectMapperUtils;
 import com.ozan.exchange.web.util.Response;
 import com.ozan.exchange.web.util.ResponseError;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
         Assertions.assertNotNull(content);
 
         // return
-        OzanExchange ozanExchange = OzanObjectUtils.extractBodyMessage(content, OzanExchange.class);
+        OzanExchange ozanExchange = OzanObjectMapperUtils.extractBodyMessage(content, OzanExchange.class);
 
         Assertions.assertEquals(ozanExchange.getBase(), base);
         Assertions.assertEquals(ozanExchange.getSymbol(), symbols);
@@ -74,7 +74,7 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
                         .andExpect(status().isBadRequest()).andReturn();
 
         // return
-        Response response = OzanObjectUtils.extractResponse(
+        Response response = OzanObjectMapperUtils.extractResponse(
                         mvcResult.getResponse().getContentAsString());
 
         ResponseError responseError = response.getError();
@@ -93,7 +93,7 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
         // then
         MvcResult mvcResult = this.mock()
                         .perform(MockMvcRequestBuilders.post("/exchangeApi/exchange/conversion")
-                                        .content(OzanObjectUtils.convertAsString(conversion))
+                                        .content(OzanObjectMapperUtils.convertAsString(conversion))
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk()).andExpect(jsonPath("$.data.base").value("EUR"))
@@ -101,7 +101,7 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
                         .andExpect(jsonPath("$.data.amount").value(10.0)).andReturn();
 
         // return
-        OzanExchange ozanExchange = OzanObjectUtils.extractBodyMessage(
+        OzanExchange ozanExchange = OzanObjectMapperUtils.extractBodyMessage(
                         mvcResult.getResponse().getContentAsString(), OzanExchange.class);
 
         Assertions.assertNotNull(ozanExchange.getConversion());
@@ -122,11 +122,11 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
         // then
         MvcResult mvcResult = this.mock()
                         .perform(MockMvcRequestBuilders.post("/exchangeApi/exchange/conversion")
-                                        .content(OzanObjectUtils.convertAsString(conversion))
+                                        .content(OzanObjectMapperUtils.convertAsString(conversion))
                                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk()).andReturn();
         // return
-        Response response = OzanObjectUtils.extractResponse(
+        Response response = OzanObjectMapperUtils.extractResponse(
                         mvcResult.getResponse().getContentAsString());
 
         Assertions.assertEquals(response.getError().getErrorCode().getCode(),
@@ -155,7 +155,7 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
 
         Assertions.assertNotNull(content);
 
-        OzanExchange ozanExchange = OzanObjectUtils.extractBodyMessage(content, OzanExchange.class);
+        OzanExchange ozanExchange = OzanObjectMapperUtils.extractBodyMessage(content, OzanExchange.class);
 
         Assertions.assertEquals(ozanExchange.getBase(), base);
         Assertions.assertEquals(ozanExchange.getSymbol(), symbol);
@@ -182,7 +182,7 @@ public class OzanExchangeApiTest extends AbstractOzanExchangeResourceTest
                         .andExpect(status().isOk()).andReturn();
 
         // return
-        Response response = OzanObjectUtils.extractResponse(
+        Response response = OzanObjectMapperUtils.extractResponse(
                         mvcResult.getResponse().getContentAsString());
         Assertions.assertEquals(response.getError().getErrorCode().getCode(),
                         ErrorCode.EXTERNAL_SERVICE_PROVIDER.EXTERNAL_RESOURCE_EXCHANGE_NOT_FOUND

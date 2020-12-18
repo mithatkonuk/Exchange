@@ -7,6 +7,7 @@ Also Swagger supported link : http://localhost:8080/swagger-ui/index.html#/
 
 All information run application and test located in ***documents/index.html or documents/index.pdf***
 
+***Central Logging,Swagger,Cache,Test and more information*** is under system design in ***documents/index.html*** or ***documents/index.pdf***
 
 Maintainer 
 Mithat Konuk

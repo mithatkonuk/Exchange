@@ -1,12 +1,14 @@
 package com.ozan.exchange.advice;
 
-import com.ozan.exchange.exception.ExchangeHistoryNotFoundException;
 import com.ozan.exchange.exception.ExchangeServiceParamException;
 import com.ozan.exchange.exception.ExternalServiceException;
+import com.ozan.exchange.exception.NotFoundException;
 import com.ozan.exchange.exception.error.ErrorCode;
 import com.ozan.exchange.web.util.Response;
 import com.ozan.exchange.web.util.ResponseError;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -22,9 +24,15 @@ import static com.ozan.exchange.exception.error.ErrorCode.EXTERNAL_SERVICE_PROVI
 import static com.ozan.exchange.exception.error.ErrorCode.EXTERNAL_SERVICE_PROVIDER.METHOD_ARGUMENT_INVALID;
 import static com.ozan.exchange.exception.error.ErrorCode.GENERIC.GENERIC_ERROR;
 
+/**
+ * Exception central
+ *
+ * @author mithat.konuk
+ */
 @ControllerAdvice
 public class ExChangeControllerAdvice
 {
+    private static final Logger logger = LoggerFactory.getLogger(ExChangeControllerAdvice.class);
 
     /// ---- Handle methods begin
 
@@ -73,6 +81,16 @@ public class ExChangeControllerAdvice
         return buildMessage(exception, METHOD_ARGUMENT_INVALID);
     }
 
+    @ExceptionHandler( { IllegalArgumentException.class } )
+    @ResponseStatus( value = HttpStatus.BAD_REQUEST )
+    public @ResponseBody
+    Response handleMethodArgumentNotValidException( final IllegalArgumentException exception,
+                    final HttpServletRequest request )
+    {
+        return buildMessage(exception,
+                        ErrorCode.EXCHANGE_SERVICE.ILLEGAL_ARGUMENT_NOT_ACCEPTABLE.getCode());
+    }
+
     @ExceptionHandler( ExchangeServiceParamException.class )
     @ResponseStatus( value = HttpStatus.BAD_REQUEST )
     public @ResponseBody
@@ -82,11 +100,10 @@ public class ExChangeControllerAdvice
         return buildMessage(exception, exception.getErrorCode());
     }
 
-    @ExceptionHandler( ExchangeHistoryNotFoundException.class )
-    @ResponseStatus( value = HttpStatus.OK )
+    @ExceptionHandler( NotFoundException.class )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public @ResponseBody
-    Response handleExchangeHistoryNotFoundException(
-                    final ExchangeHistoryNotFoundException exception,
+    Response handleExchangeFoundException( final NotFoundException exception,
                     final HttpServletRequest request )
     {
         return buildMessage(exception, exception.getErrorCode());
@@ -97,6 +114,16 @@ public class ExChangeControllerAdvice
     private Response buildMessage( Exception exception, ErrorCode errorCode )
     {
         ResponseError responseError = ResponseError.builder().errorCode(errorCode).build();
+        logger.warn(responseError.toString());
+        return Response.builder().error(responseError).build();
+    }
+
+    private Response buildMessage( Exception exception, int code )
+    {
+        ErrorCode errorCode =
+                        ErrorCode.builder().code(code).description(exception.getMessage()).build();
+        ResponseError responseError = ResponseError.builder().errorCode(errorCode).build();
+        logger.warn(responseError.toString());
         return Response.builder().error(responseError).build();
     }
 }

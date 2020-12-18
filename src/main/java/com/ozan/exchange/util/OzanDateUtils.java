@@ -10,9 +10,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * Simple Date Utility
  * We can also use provider which is wrapper different time api
  * <p>
  * private DateProvider dateProvider;
+ *
+ * @author mithat.konuk
  */
 public class OzanDateUtils
 {

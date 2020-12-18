@@ -4,6 +4,10 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * custom configuration for rest exchange provider
+ * @author mithat.konuk
+ */
 @Data
 @Configuration
 @ConfigurationProperties( prefix = "forgien-exchange-providers.rest" )

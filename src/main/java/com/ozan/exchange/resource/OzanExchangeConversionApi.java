@@ -3,7 +3,7 @@ package com.ozan.exchange.resource;
 import com.ozan.exchange.domain.OzanExChangeTransaction;
 import com.ozan.exchange.dto.OzanPaging;
 import com.ozan.exchange.service.ExchangeConversionService;
-import com.ozan.exchange.util.OzanObjectUtils;
+import com.ozan.exchange.util.OzanObjectMapperUtils;
 import com.ozan.exchange.web.util.Response;
 import com.ozan.exchange.web.util.ResponseError;
 import io.swagger.annotations.ApiParam;
@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.PositiveOrZero;
 
+/**
+ * Conversion Api
+ *
+ * @author mithat.konuk
+ */
 @RestController
 @RequestMapping( "/conversionApi" )
 @AllArgsConstructor
@@ -33,15 +38,17 @@ public class OzanExchangeConversionApi
     private final ExchangeConversionService exchangeConversionService;
 
     @GetMapping( "/conversion/transaction" )
-    public Response conversionByTransaction( @RequestParam( value = "transaction_id",
-                                                            defaultValue = "" ) String transaction )
+    public Response conversionByTransaction(
+                    @ApiParam( "Transaction is type of UUID, please provide format by UUID" )
+                    @RequestParam( value = "transaction_id",
+                                   defaultValue = "" ) String transaction )
     {
         OzanExChangeTransaction ozanExChangeTransaction =
                         exchangeConversionService.exchangeHistory(transaction);
 
         logger.info(ozanExChangeTransaction.toString());
 
-        return Response.builder().data(OzanObjectUtils.mapper(ozanExChangeTransaction))
+        return Response.builder().data(OzanObjectMapperUtils.mapper(ozanExChangeTransaction))
                         .error(ResponseError.EMPTY_RESPONSE_ERROR).build();
     }
 
@@ -59,7 +66,7 @@ public class OzanExchangeConversionApi
         Page<OzanExChangeTransaction> exchangeConversions =
                         exchangeConversionService.exchangeHistory(date, offset, pageSize);
 
-        OzanPaging ozanPaging = OzanObjectUtils.mapper(exchangeConversions);
+        OzanPaging ozanPaging = OzanObjectMapperUtils.mapper(exchangeConversions);
 
         logger.info(ozanPaging.toString());
 
@@ -72,7 +79,7 @@ public class OzanExchangeConversionApi
                                                defaultValue = "" )
     @ApiParam( "Represent to date , format [YYYY-MM-DD] , default value empty" ) String date,
 
-                    @ApiParam( "Represent to transaction , default value empty" )
+                    @ApiParam( "Transaction is type of UUID, please provide format by UUID default value empty" )
                     @RequestParam( value = "transaction_id",
                                    defaultValue = "" ) String transaction,
 
@@ -89,7 +96,7 @@ public class OzanExchangeConversionApi
                         .exchangeHistoryByTransactionAndCreatedDate(transaction, date, offset,
                                         pageSize);
 
-        OzanPaging ozanPaging = OzanObjectUtils.mapper(exchangeConversions);
+        OzanPaging ozanPaging = OzanObjectMapperUtils.mapper(exchangeConversions);
 
         logger.info(ozanPaging.toString());
 

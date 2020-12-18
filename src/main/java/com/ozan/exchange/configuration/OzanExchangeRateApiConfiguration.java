@@ -13,6 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * Extendable for service provider configuration
+ *
+ * @author mithat.konuk
  */
 @Configuration
 public class OzanExchangeRateApiConfiguration extends CachingConfigurerSupport

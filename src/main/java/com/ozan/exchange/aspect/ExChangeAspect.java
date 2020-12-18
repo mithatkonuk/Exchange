@@ -9,6 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * General Aspect
+ * @author mithat.konuk
+ */
 @Aspect
 @Component
 public class ExChangeAspect
